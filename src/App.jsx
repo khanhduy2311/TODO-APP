@@ -20,26 +20,18 @@ import {
 function App() {
   const [todos, setTodos] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [user, setUser] = useState(null); // State để lưu thông tin người dùng
-  const [loading, setLoading] = useState(true); // State để chờ kiểm tra auth
-
-  // Lắng nghe sự thay đổi trạng thái đăng nhập
+  const [user, setUser] = useState(null); 
+  const [loading, setLoading] = useState(true); 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
-
-  // Lấy dữ liệu todos từ Firestore khi người dùng đăng nhập
   useEffect(() => {
     if (user) {
-      // Tạo query để lấy todos của user hiện tại (dựa trên uid)
       const q = query(collection(db, 'todos'), where('uid', '==', user.uid));
-
-      // Lắng nghe sự thay đổi dữ liệu thời gian thực
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const todosData = [];
         querySnapshot.forEach((doc) => {
@@ -50,16 +42,13 @@ function App() {
 
       return () => unsubscribe();
     } else {
-      // Nếu người dùng đăng xuất, xóa danh sách todos
       setTodos([]);
     }
-  }, [user]); // Chạy lại effect này mỗi khi user thay đổi
-
-  // Thêm todo mới vào Firestore
+  }, [user]); 
   const addTodo = async (text, dueDate) => {
     if (!user) return;
     await addDoc(collection(db, 'todos'), {
-      uid: user.uid, // Gắn uid của người dùng vào todo
+      uid: user.uid, 
       text,
       dueDate,
       completed: false,
@@ -67,7 +56,6 @@ function App() {
     });
   };
 
-  // Xóa todo khỏi Firestore
   const deleteTodo = async (id) => {
     if (!user) return;
     if (window.confirm('Bạn có chắc chắn muốn xóa công việc này?')) {
@@ -75,7 +63,6 @@ function App() {
     }
   };
 
-  // Cập nhật trạng thái completed của todo trong Firestore
   const toggleTodo = async (id) => {
     if (!user) return;
     const todoToToggle = todos.find(todo => todo.id === id);
@@ -90,8 +77,6 @@ function App() {
   const handleLogout = () => {
     signOut(auth);
   };
-
-  // Lọc todos dựa trên ngày đã chọn trên lịch
   const filteredTodos = todos.filter(todo => {
     if (!todo.dueDate) return false;
     const todoDate = new Date(todo.dueDate);
@@ -100,15 +85,12 @@ function App() {
   });
 
   if (loading) {
-    return <div>Loading...</div>; // Màn hình chờ trong khi kiểm tra đăng nhập
+    return <div>Loading...</div>;
   }
-
-  // Nếu chưa đăng nhập, hiển thị trang Auth
   if (!user) {
     return <Auth />;
   }
 
-  // Nếu đã đăng nhập, hiển thị ứng dụng todo
   return (
     <>
       <div style={{ position: 'absolute', top: 20, right: 20 }}>

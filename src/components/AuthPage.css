@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
-/* Reset and Body styles for the auth page */
 .auth-body {
   display: flex;
   justify-content: center;
@@ -84,7 +83,6 @@
 	width: 100%;
 }
 
-/* Main Container */
 .auth-container {
 	background-color: #fff;
 	border-radius: 10px;
@@ -97,7 +95,6 @@
 	min-height: 480px;
 }
 
-/* Form Containers */
 .form-container {
 	position: absolute;
 	top: 0;
@@ -118,7 +115,6 @@
 	z-index: 1;
 }
 
-/* Sliding animation for forms */
 .auth-container.right-panel-active .sign-in-container {
 	transform: translateX(100%);
 }
@@ -142,7 +138,6 @@
 	}
 }
 
-/* Overlay Container */
 .overlay-container {
 	position: absolute;
 	top: 0;

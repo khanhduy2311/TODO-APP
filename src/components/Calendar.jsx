@@ -9,7 +9,7 @@ function Calendar({ selectedDate, onDateChange, todos }) {
 
   const changeMonth = (offset) => {
     const newDisplayDate = new Date(displayDate);
-    newDisplayDate.setMonth(displayDate.getMonth() + offset, 1); // Set to day 1 to avoid month skipping issues
+    newDisplayDate.setMonth(displayDate.getMonth() + offset, 1); 
     setDisplayDate(newDisplayDate);
   };
   
@@ -22,17 +22,14 @@ function Calendar({ selectedDate, onDateChange, todos }) {
     const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
     const grid = [];
 
-    // Add day names
     dayNames.forEach(name => {
       grid.push(<div key={name} className="day-name">{name}</div>);
     });
     
-    // Add empty cells for days before the 1st
     for (let i = 0; i < firstDayOfMonth; i++) {
       grid.push(<div key={`empty-${i}`} className="inactive"></div>);
     }
     
-    // Add day cells
     for (let day = 1; day <= daysInMonth; day++) {
       const fullDate = new Date(year, month, day);
       
@@ -41,7 +38,6 @@ function Calendar({ selectedDate, onDateChange, todos }) {
 
       const todosForThisDay = todos.filter(todo => {
         if (!todo.dueDate) return false;
-        // Chú ý: Cần cộng 1 ngày cho new Date() vì nó tính theo UTC
         const todoDate = new Date(todo.dueDate);
         const localTodoDate = new Date(todoDate.getUTCFullYear(), todoDate.getUTCMonth(), todoDate.getUTCDate());
         return localTodoDate.toDateString() === fullDate.toDateString();

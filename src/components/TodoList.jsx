@@ -1,5 +1,3 @@
-// src/components/TodoList.jsx
-
 import TodoItem from './TodoItem';
 
 function TodoList({ todos, toggleTodo, deleteTodo }) {
@@ -17,8 +15,8 @@ function TodoList({ todos, toggleTodo, deleteTodo }) {
         <TodoItem
           key={todo.id}
           todo={todo}
-          toggleTodo={toggleTodo} // Đảm bảo bạn có dòng này
-          deleteTodo={deleteTodo} // Và dòng này
+          toggleTodo={toggleTodo} 
+          deleteTodo={deleteTodo} 
         />
       ))}
     </ul>

@@ -1,7 +1,4 @@
-// src/components/TodoItem.jsx
-
 function TodoItem({ todo, toggleTodo, deleteTodo }) {
-  // Helper để format ngày tháng cho đẹp
   const formattedDueDate = todo.dueDate
     ? new Date(todo.dueDate).toLocaleDateString('vi-VN', {
         day: 'numeric',
@@ -20,8 +17,8 @@ function TodoItem({ todo, toggleTodo, deleteTodo }) {
       <input
         type="checkbox"
         id={`todo-${todo.id}`}
-        checked={todo.completed} // QUAN TRỌNG: Gắn trạng thái checked với dữ liệu
-        onChange={() => toggleTodo(todo.id)} // QUAN TRỌNG: Gọi hàm toggle khi click
+        checked={todo.completed}
+        onChange={() => toggleTodo(todo.id)} 
       />
       
       {/* Label này hoạt động như một checkbox tùy chỉnh về giao diện */}
