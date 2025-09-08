@@ -58,7 +58,7 @@ function App() {
 
   const deleteTodo = async (id) => {
     if (!user) return;
-    if (window.confirm('Bạn có chắc chắn muốn xóa công việc này?')) {
+    if (window.confirm('Do you want to delete this task?')) {
       await deleteDoc(doc(db, 'todos', id));
     }
   };
@@ -94,8 +94,8 @@ function App() {
   return (
     <>
       <div style={{ position: 'absolute', top: 20, right: 20 }}>
-        <span>Chào, {user.email}</span>
-        <button onClick={handleLogout} style={{ marginLeft: '10px' }}>Đăng xuất</button>
+        <span>Hi, {user.email}</span>
+        <button onClick={handleLogout} style={{ marginLeft: '10px' }}>Sign Out</button>
       </div>
       <h1>To-do app</h1>
       <div className="main-container">

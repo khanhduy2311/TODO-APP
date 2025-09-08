@@ -69,7 +69,7 @@ function Calendar({ selectedDate, onDateChange, todos }) {
       <div className="calendar-header">
         <button id="prevMonthBtn" onClick={() => changeMonth(-1)}>&lt;</button>
         <h2 id="monthYearDisplay">
-          {displayDate.toLocaleString('vi-VN', { month: 'long', year: 'numeric' })}
+          {displayDate.toLocaleString('en-GB', { month: 'long', year: 'numeric' })}
         </h2>
         <button id="nextMonthBtn" onClick={() => changeMonth(1)}>&gt;</button>
       </div>

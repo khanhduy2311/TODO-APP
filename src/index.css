@@ -301,7 +301,7 @@ input[type="checkbox"] {
 
 .calendar-header h2 {
     font-size: 1.5rem;
-    color: var(--text-color);
+    color: var(--accent-color);
     margin: 0;
 }
 
@@ -358,7 +358,7 @@ input[type="checkbox"] {
 .calendar-grid .inactive {
     color: var(--placeholder-color);
     cursor: default;
-    background-color: #151618; /* Slightly lighter background for inactive days */
+    background-color: #ca86f7; /* Slightly lighter background for inactive days */
 }
 
 .task-dot {

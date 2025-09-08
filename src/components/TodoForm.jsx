@@ -17,7 +17,7 @@ function TodoForm({ addTodo }) {
       <input
         id="todo-input"
         type="text"
-        placeholder="Thêm công việc mới..."
+        placeholder="Add new task..."
         autoComplete="off"
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -29,7 +29,7 @@ function TodoForm({ addTodo }) {
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
       />
-      <button id="add-button" type="submit">Thêm</button>
+      <button id="add-button" type="submit">Add</button>
     </form>
   );
 }
