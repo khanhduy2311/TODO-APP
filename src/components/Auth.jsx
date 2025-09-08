@@ -1,65 +1,94 @@
+
 import { useState } from 'react';
 import { auth } from '../firebase';
 import { 
   createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword 
+  signInWithEmailAndPassword,
+  updateProfile 
 } from "firebase/auth";
+import './AuthPage.css';
 
-// Sử dụng một số style từ file index.css
-function Auth() {
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function AuthPage() {
+  const [isSignUpActive, setIsSignUpActive] = useState(false);
+  const [signUpName, setSignUpName] = useState('');
+  const [signUpEmail, setSignUpEmail] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
+  const [signInEmail, setSignInEmail] = useState('');
+  const [signInPassword, setSignInPassword] = useState('');
+
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    setError(''); // Reset error message
-
+    setError('');
     try {
-      if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
-        // Firebase's onAuthStateChanged will handle the rest
-      } else {
-        await createUserWithEmailAndPassword(auth, email, password);
-        // Firebase's onAuthStateChanged will handle the rest
-      }
+      const userCredential = await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword);
+      await updateProfile(userCredential.user, {
+        displayName: signUpName
+      });
     } catch (err) {
-      setError(err.message);
-      console.error(err);
+      setError(err.message.replace('Firebase: ', ''));
+    }
+  };
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      await signInWithEmailAndPassword(auth, signInEmail, signInPassword);
+    } catch (err) {
+      setError(err.message.replace('Firebase: ', ''));
     }
   };
 
   return (
-    <div id="auth-container">
-      <div className="auth-box">
-        <h2>{isLogin ? 'Đăng nhập' : 'Đăng ký'}</h2>
-        <form onSubmit={handleSubmit}>
-          <input 
-            type="email" 
-            placeholder="Email" 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required 
-          />
-          <input 
-            type="password" 
-            placeholder="Mật khẩu"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required 
-          />
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-          <div className="auth-buttons">
-            <button type="submit">{isLogin ? 'Đăng nhập' : 'Đăng ký'}</button>
+    <div className="auth-body">
+      <div className={`auth-container ${isSignUpActive ? "right-panel-active" : ""}`}>
+        {/* Form Đăng Ký */}
+        <div className="form-container sign-up-container">
+          <form onSubmit={handleSignUp}>
+            <h1>Create Account</h1>
+            <span>or use your email for registration</span>
+            <input type="text" placeholder="Name" value={signUpName} onChange={(e) => setSignUpName(e.target.value)} required />
+            <input type="email" placeholder="Email" value={signUpEmail} onChange={(e) => setSignUpEmail(e.target.value)} required />
+            <input type="password" placeholder="Password" value={signUpPassword} onChange={(e) => setSignUpPassword(e.target.value)} required />
+            <button type="submit" style={{marginTop: '10px'}}>Sign Up</button>
+            {error && isSignUpActive && <p className="error-message">{error}</p>}
+          </form>
+        </div>
+        
+        {/* Form Đăng Nhập */}
+        <div className="form-container sign-in-container">
+          <form onSubmit={handleSignIn}>
+            <h1>Sign In</h1>
+            <span>or use your account</span>
+            <input type="email" placeholder="Email" value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} required />
+            <input type="password" placeholder="Password" value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} required />
+            <a href="#">Forgot your password?</a>
+            <button type="submit">Sign In</button>
+            {error && !isSignUpActive && <p className="error-message">{error}</p>}
+          </form>
+        </div>
+        
+        {/* Lớp Overlay với hiệu ứng trượt */}
+        <div className="overlay-container">
+          <div className="overlay">
+            <div className="overlay-panel overlay-left">
+              <h1>Welcome Back!</h1>
+              <p>To keep connected with us please login with your personal info</p>
+              <button className="ghost" onClick={() => setIsSignUpActive(false)}>Sign In</button>
+            </div>
+            <div className="overlay-panel overlay-right">
+              <h1>Hello, Friend!</h1>
+              <p>Enter your personal details and start journey with us</p>
+              <button className="ghost" onClick={() => setIsSignUpActive(true)}>Sign Up</button>
+            </div>
           </div>
-        </form>
-        <button onClick={() => setIsLogin(!isLogin)} style={{ background: 'none', border: 'none', color: 'var(--accent-color)', cursor: 'pointer', marginTop: '15px' }}>
-          {isLogin ? 'Chưa có tài khoản? Đăng ký' : 'Đã có tài khoản? Đăng nhập'}
-        </button>
+        </div>
       </div>
     </div>
   );
 }
 
-export default Auth;
+
+export default AuthPage;
