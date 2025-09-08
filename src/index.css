@@ -1,0 +1,420 @@
+:root {
+  --background: #ffffff;
+  --primary-color: #f3f0ff;
+  --secondary-color: #bf9cff;
+  --accent-color: #8e51b3;
+  --text-color: #1a1a1a;
+  --placeholder-color: #777;
+  --border-radius-main: 15px;
+  --border-radius-small: 8px;
+  --shadow-light: rgba(0, 0, 0, 0.15);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16pt;
+  color: var(--text-color);
+}
+
+body {
+  min-height: 100vh;
+  padding: 20px;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  margin-bottom: 30px;
+  font-size: 3.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--accent-color);
+  letter-spacing: 2px;
+}
+
+/* Auth Box */
+#auth-container {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+}
+
+.auth-box {
+  background: var(--primary-color);
+  padding:30px;
+  border-radius: var(--border-radius-main);
+  box-shadow:0 10px 30px var(--shadow-light);
+  text-align:center;
+  max-width:400px;
+  width:100%;
+}
+
+.auth-box input {
+  width:100%;
+  padding:12px 15px;
+  margin:10px 0;
+  border:1px solid var(--secondary-color);
+  border-radius: var(--border-radius-small);
+  font:inherit;
+}
+
+.auth-buttons {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.auth-buttons button {
+  flex:1;
+  background: var(--accent-color);
+  color: var(--background);
+  padding:10px;
+  border:none;
+  border-radius: var(--border-radius-small);
+  cursor:pointer;
+  font-weight:600;
+}
+.main-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+}
+
+.wrapper, .calendar-widget {
+    background-color: var(--primary-color);
+    border-radius: var(--border-radius-main);
+    box-shadow: 0 10px 30px var(--shadow-light);
+    padding: 30px;
+    flex: 1; /* Allow flex items to grow and shrink */
+    min-width: 350px; /* Minimum width for each section */
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#todo-input {
+    padding: 15px 20px;
+    width: 100%;
+    background: var(--background);
+    border: 2px solid var(--secondary-color);
+    border-radius: var(--border-radius-small);
+    font: inherit;
+    color: var(--text-color);
+    caret-color: var(--accent-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#todo-input::placeholder {
+    color: var(--placeholder-color);
+}
+
+#todo-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 255, 196, 0.3);
+}
+
+#due-date-input {
+    padding: 10px 15px;
+    background: var(--background);
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--border-radius-small);
+    font: inherit;
+    color: var(--text-color);
+    -webkit-appearance: none; /* Remove default date input styling */
+    appearance: none;
+    cursor: text;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#due-date-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(0, 255, 196, 0.2);
+}
+
+/* Style for the date input picker icon (browser-specific, hard to override fully) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.5); /* Make the icon more visible on dark theme */
+    cursor: pointer;
+}
+
+#add-button {
+    background-color: var(--accent-color);
+    padding: 12px 25px;
+    border: none;
+    border-radius: var(--border-radius-small);
+    font: inherit;
+    font-weight: 600;
+    color: var(--background);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#add-button:hover {
+    background-color: #00e6b8;
+    transform: translateY(-2px);
+}
+
+#todo-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.todo {
+    margin-bottom: 12px;
+    padding: 12px 16px;
+    background-color: var(--background);
+    border-radius: var(--border-radius-small);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 8px var(--shadow-light);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.todo:hover {
+    transform: translateX(5px);
+}
+
+.todo .todo-text {
+    flex-grow: 1;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    transition: 200ms ease;
+}
+
+.todo .deadline-date {
+    font-size: 0.85em;
+    color: var(--secondary-color);
+    margin-left: auto; /* Push deadline to the right */
+    white-space: nowrap; /* Prevent date from wrapping */
+}
+
+.delete-button {
+    padding: 5px;
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+.delete-button svg {
+    transition: 200ms ease;
+    fill: var(--secondary-color);
+}
+
+.delete-button:hover svg {
+    fill: #ff4757; /* A more distinct delete color */
+}
+
+.custom-checkbox {
+    border: 2px solid var(--accent-color);
+    border-radius: 50%;
+    min-height: 22px;
+    min-width: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    transition: 200ms ease;
+    cursor: pointer;
+}
+
+.custom-checkbox svg {
+    fill: transparent; /* Initial state, checkbox not checked */
+    transition: 200ms ease;
+}
+
+input[type="checkbox"]:checked ~ .custom-checkbox {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+input[type="checkbox"]:checked ~ .custom-checkbox svg {
+    fill: var(--primary-color);
+}
+
+input[type="checkbox"]:checked ~ .todo-text,
+input[type="checkbox"]:checked ~ .deadline-date {
+    text-decoration: line-through;
+    color: var(--secondary-color);
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+/* Calendar Widget Styles */
+.calendar-widget {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calendar-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-header button {
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.calendar-header button:hover {
+    color: #00e6b8;
+}
+
+.calendar-header h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.calendar-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    text-align: center;
+}
+
+.calendar-grid div {
+    padding: 8px 0;
+    border-radius: var(--border-radius-small);
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.calendar-grid .day-name {
+    font-weight: 700;
+    color: var(--accent-color);
+    background-color: var(--secondary-color);
+    padding: 10px 0;
+}
+
+.calendar-grid .day {
+    background-color: var(--background);
+    color: var(--text-color);
+}
+
+.calendar-grid .day:hover:not(.inactive) {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.calendar-grid .current-day {
+    background-color: var(--accent-color);
+    color: var(--background);
+    font-weight: 700;
+}
+
+.calendar-grid .selected-calendar-day {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    border: 2px solid var(--accent-color);
+}
+
+.calendar-grid .inactive {
+    color: var(--placeholder-color);
+    cursor: default;
+    background-color: #151618; /* Slightly lighter background for inactive days */
+}
+
+.task-dot {
+    position: absolute;
+    bottom: 3px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--accent-color); /* Default dot color */
+}
+.task-dot.completed-dot {
+    background-color: limegreen; /* Green for all tasks completed */
+}
+.task-dot.has-tasks-dot {
+    background-color: orangered; /* Red for some tasks remaining */
+}
+
+/* Responsive Adjustments */
+@media(max-width: 800px) {
+    .main-container {
+        flex-direction: column;
+    }
+    .wrapper, .calendar-widget {
+        min-width: unset; /* Remove min-width on small screens */
+        width: 100%;
+    }
+}
+
+@media(max-width: 500px) {
+    html {
+        font-size: 14pt;
+    }
+    h1 {
+        font-size: 2.5rem;
+    }
+    .main-container {
+        padding: 0 10px;
+    }
+    .wrapper, .calendar-widget {
+        padding: 20px;
+    }
+    form {
+        flex-direction: column;
+        gap: 15px;
+    }
+    #add-button {
+        width: 100%;
+        margin-top: 0;
+    }
+    .todo {
+        flex-wrap: wrap; /* Allow todo item content to wrap */
+        gap: 10px;
+    }
+    .todo .deadline-date {
+        flex-basis: 100%; /* Make deadline take full width on new line */
+        text-align: right;
+        margin-top: -10px; /* Adjust spacing */
+    }
+}
