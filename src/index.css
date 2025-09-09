@@ -548,3 +548,10 @@ body.dark-theme .user-menu-container {
   font-weight: 600; 
   color: #00ffab;
 }
+body.dartk-theme .todo .todo-text {
+    flex-grow: 1;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    color: #ffffff;
+    transition: 200ms ease;
+}
