@@ -424,7 +424,8 @@ input[type="checkbox"] {
   display: flex;
   align-items: center;
   gap: 15px;
-  z-index: 1000; /* Đảm bảo menu nằm trên các phần tử khác */
+  z-index: 1000;
+  font-size: 0.8rem; /* Đảm bảo menu nằm trên các phần tử khác */
 }
 
 /* Nút 3 gạch ngang (hamburger) */
@@ -488,7 +489,7 @@ input[type="checkbox"] {
   border: none;
   text-align: left;
   padding: 10px 15px;
-  font-size: 0.5rem;
+  font-size: 0.8rem;
   font-family: inherit;
   cursor: pointer;
   border-radius: var(--border-radius-small);
