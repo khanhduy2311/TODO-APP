@@ -1,10 +1,12 @@
+// src/components/TodoList.jsx
+
 import TodoItem from './TodoItem';
 
-function TodoList({ todos, toggleTodo, deleteTodo }) {
+function TodoList({ todos, toggleTodo, deleteTodo, editTodo }) { // NHẬN EDIT TODO
   if (todos.length === 0) {
     return (
       <p style={{ color: 'var(--placeholder-color)', fontStyle: 'italic', marginTop: '15px' }}>
-        Không có công việc nào cho ngày này.
+        No tasks for this day.
       </p>
     );
   }
@@ -17,6 +19,7 @@ function TodoList({ todos, toggleTodo, deleteTodo }) {
           todo={todo}
           toggleTodo={toggleTodo} 
           deleteTodo={deleteTodo} 
+          editTodo={editTodo} // TRUYỀN EDIT TODO XUỐNG
         />
       ))}
     </ul>
