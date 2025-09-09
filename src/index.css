@@ -417,3 +417,38 @@ input[type="checkbox"] {
         margin-top: -10px; /* Adjust spacing */
     }
 }
+.priority-indicator {
+  width: 5px;
+  height: 80%;
+  position: absolute;
+  left: 0;
+  top: 10%;
+  border-radius: 5px;
+  background-color: grey; /* Màu mặc định */
+}
+
+/* Các màu cụ thể cho từng mức ưu tiên */
+.todo.priority-high .priority-indicator { background-color: #f44336; /* Red */ }
+.todo.priority-medium .priority-indicator { background-color: #ff9800; /* Orange */ }
+.todo.priority-low .priority-indicator { background-color: #4caf50; /* Green */ }
+
+/* Chỉnh padding của .todo để không bị đè lên vạch màu */
+.todo {
+  padding-left: 30px; /* Tăng padding trái */
+  position: relative;
+}
+
+/* Style cho các ô input trong form */
+.todo-form .form-row {
+  display: flex;
+  gap: 10px;
+}
+.todo-form #due-date-input, .todo-form #priority-select {
+  flex: 1;
+  padding: 10px 15px;
+  background: var(--background);
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--border-radius-small);
+  font: inherit;
+  color: var(--text-color);
+}
