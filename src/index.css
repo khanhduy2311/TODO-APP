@@ -501,3 +501,36 @@ input[type="checkbox"] {
   background-color: var(--primary-color);
   color: var(--accent-color);
 }
+body.dark-theme {
+  --background: #1a1e23; /* Màu nền đen mờ */
+  --primary-color: #252a31; /* Màu container chính, hơi sáng hơn nền */
+  --secondary-color: #4db6ac; /* Màu xanh lá nhạt hơn cho các chi tiết phụ */
+  --accent-color: #00ffab; /* Màu xanh lá NEON cho các điểm nhấn chính */
+  --text-color: #e0e0e0; /* Màu chữ trắng ngà, đỡ mỏi mắt hơn trắng tinh */
+  --placeholder-color: #888;
+  --shadow-light: rgba(0, 255, 171, 0.1); /* Đổ bóng màu xanh neon mờ */
+}
+
+/* Một vài tinh chỉnh nhỏ cho Dark Mode */
+body.dark-theme .calendar-grid .day {
+  background-color: #31363e; /* Nền của các ngày trong lịch */
+}
+
+body.dark-theme .calendar-grid .inactive {
+  background-color: #252a31; /* Nền của ngày không hoạt động */
+  color: #555;
+}
+
+body.dark-theme .todo {
+   background-color: #31363e; /* Nền của từng mục to-do */
+}
+
+/* Đảm bảo nút trong menu cũng đổi màu */
+body.dark-theme .dropdown-menu button:hover {
+  background-color: rgba(0, 255, 171, 0.1);
+}
+
+/* Đảm bảo svg cũng có màu phù hợp */
+body.dark-theme .menu-toggle-btn svg {
+  stroke: var(--accent-color);
+}
