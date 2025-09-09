@@ -200,7 +200,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .todo .todo-text {
     flex-grow: 1;
-    font-size: 1.0rem;
+    font-size: 0.8rem;
     line-height: 1.2;
     transition: 200ms ease;
 }
