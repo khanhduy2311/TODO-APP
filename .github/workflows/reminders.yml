@@ -1,0 +1,37 @@
+name: Send Deadline Reminders
+
+on:
+  # Lên lịch chạy vào 8h sáng mỗi ngày (giờ UTC, tức 15h giờ Việt Nam)
+  # Bạn có thể đổi '0 1 * * *' thành '0 8 * * *' để chạy lúc 8h sáng UTC
+  schedule:
+    - cron: '0 1 * * *' 
+  # Cho phép chạy thủ công từ tab Actions trên GitHub
+  workflow_dispatch:
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies for script
+        # Cài đặt các thư viện cần thiết cho script
+        run: npm install firebase-admin firebase resend
+
+      - name: Run reminder script
+        # Chạy script và truyền các "bí mật" vào làm biến môi trường
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+          VITE_AUTH_DOMAIN: ${{ secrets.VITE_AUTH_DOMAIN }}
+          VITE_PROJECT_ID: ${{ secrets.VITE_PROJECT_ID }}
+          VITE_STORAGE_BUCKET: ${{ secrets.VITE_STORAGE_BUCKET }}
+          VITE_MESSAGING_SENDER_ID: ${{ secrets.VITE_MESSAGING_SENDER_ID }}
+          VITE_APP_ID: ${{ secrets.VITE_APP_ID }}
+        run: node scripts/send-reminders.js
