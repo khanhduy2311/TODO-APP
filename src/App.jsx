@@ -1,4 +1,3 @@
-// src/App.jsx - PHIÊN BẢN GỐC + DARK/LIGHT MODE
 
 import { useState, useEffect, useRef } from 'react';
 import TodoForm from './components/TodoForm';
@@ -20,7 +19,6 @@ import {
 
 
 function App() {
-  // Lấy theme đã lưu, nếu không có thì mặc định là 'light'
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [todos, setTodos] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -30,13 +28,11 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null); 
 
-  // useEffect để áp dụng theme và lưu vào localStorage
   useEffect(() => {
     document.body.classList.toggle('dark-theme', theme === 'dark');
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // Các useEffect và hàm gốc của bạn được giữ nguyên
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -97,10 +93,9 @@ function App() {
   
   const handleLogout = () => { signOut(auth); };
 
-  // Hàm để chuyển đổi theme
   const toggleTheme = () => {
     setTheme(currentTheme => (currentTheme === 'light' ? 'dark' : 'light'));
-    setIsMenuOpen(false); // Đóng menu sau khi chọn
+    setIsMenuOpen(false);
   };
   
   const filteredTodos = todos.filter(todo => {
@@ -128,7 +123,6 @@ function App() {
               </button>
             </li>
             <li><button>Tasks</button></li>
-            {/* THÊM NÚT CHUYỂN ĐỔI THEME VÀO MENU */}
             <li><button onClick={handleLogout}>Sign Out</button></li>
           </ul>
         </div>
