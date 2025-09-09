@@ -32,7 +32,7 @@
 The application will be running on `http://localhost:5173`.
 
 ## 🔗 Deployed Web URL or APK file
-✍️ [Your Deployed URL Here - e.g., on Vercel, Netlify]
+    https://naver-todo-app.vercel.app/
 
 
 ## 🎥 Demo Video
