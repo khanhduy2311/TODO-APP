@@ -1,22 +1,16 @@
+// src/App.jsx - PHIÊN BẢN SỬA LỖI GIAO DIỆN LOGIN KHI Ở DARK MODE
 
 import { useState, useEffect, useRef } from 'react';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import Calendar from './components/Calendar';
-import Auth from './components/Auth';
+import Auth from './components/Auth'; // Hoặc AuthPage
 import { auth, db } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { 
-  collection, 
-  query, 
-  where, 
-  onSnapshot, 
-  addDoc, 
-  doc, 
-  updateDoc, 
-  deleteDoc 
+  collection, query, where, onSnapshot, addDoc, 
+  doc, updateDoc, deleteDoc 
 } from 'firebase/firestore';
-
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -28,11 +22,14 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null); 
 
+  // ***** SỬA LẠI useEffect CỦA THEME *****
+  // Logic này giờ sẽ áp dụng theme cho TOÀN BỘ trang, bất kể đã đăng nhập hay chưa.
   useEffect(() => {
     document.body.classList.toggle('dark-theme', theme === 'dark');
     localStorage.setItem('theme', theme);
-  }, [theme]);
+  }, [theme]); // Chỉ phụ thuộc vào theme
 
+  // Các useEffect và hàm gốc của bạn được giữ nguyên
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -63,7 +60,6 @@ function App() {
         });
         setTodos(todosData);
       });
-
       return () => unsubscribe();
     } else {
       setTodos([]);
@@ -106,6 +102,7 @@ function App() {
   });
 
   if (loading) { return <div>Loading...</div>; }
+  
   if (!user) { return <Auth />; }
 
   return (
@@ -117,12 +114,12 @@ function App() {
         </button>
         <div className={`dropdown-menu ${isMenuOpen ? 'active' : ''}`}>
           <ul>
+            <li><button>Tasks</button></li>
             <li>
               <button onClick={toggleTheme}>
                 {theme === 'light' ? 'Dark Mode 🌙' : 'Light Mode ☀️'}
               </button>
             </li>
-            <li><button>Tasks</button></li>
             <li><button onClick={handleLogout}>Sign Out</button></li>
           </ul>
         </div>
@@ -131,7 +128,7 @@ function App() {
       <h1>To-do app</h1>
       <div className="main-container">
         <div className="wrapper">
-          <TodoForm addTodo={addTodo} selectedDate={selectedDate}/>
+          <TodoForm addTodo={addTodo} />
           <TodoList
             todos={filteredTodos}
             toggleTodo={toggleTodo}
