@@ -1,11 +1,10 @@
+# .github/workflows/reminders.yml - PHIÊN BẢN SỬA LỖI
+
 name: Send Deadline Reminders
 
 on:
-  # Lên lịch chạy vào 8h sáng mỗi ngày (giờ UTC, tức 15h giờ Việt Nam)
-  # Bạn có thể đổi '0 1 * * *' thành '0 8 * * *' để chạy lúc 8h sáng UTC
   schedule:
-    - cron: '1 6 * * *' 
-  # Cho phép chạy thủ công từ tab Actions trên GitHub
+    - cron: '0 1 * * *' 
   workflow_dispatch:
 
 jobs:
@@ -21,11 +20,10 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies for script
-        # Cài đặt các thư viện cần thiết cho script
-        run: npm install firebase-admin firebase resend
+        # SỬA LẠI DÒNG NÀY ĐỂ CÀI ĐÚNG THƯ VIỆN
+        run: npm install firebase firebase-admin resend
 
       - name: Run reminder script
-        # Chạy script và truyền các "bí mật" vào làm biến môi trường
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }}

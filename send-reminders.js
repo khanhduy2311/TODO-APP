@@ -1,9 +1,12 @@
-const { initializeApp } = require("firebase/app");
-const { getFirestore, collection, query, where, getDocs } = require("firebase/firestore");
-const { getAuth, getUser } = require("firebase/auth");
-const { Resend } = require("resend");
+// send-reminders.js - PHIÊN BẢN SỬA LỖI
 
-// Lấy thông tin cấu hình từ "Secrets" của GitHub Actions
+// Dùng cú pháp 'import' thay vì 'require'
+import { initializeApp, getApps } from "firebase/app";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { initializeApp as initializeAdminApp, getAuth } from "firebase-admin/auth";
+import { Resend } from "resend";
+
+// Cấu hình Firebase Client SDK (để đọc dữ liệu)
 const firebaseConfig = {
   apiKey: process.env.VITE_API_KEY,
   authDomain: process.env.VITE_AUTH_DOMAIN,
@@ -13,26 +16,31 @@ const firebaseConfig = {
   appId: process.env.VITE_APP_ID,
 };
 
+// Cấu hình Firebase Admin SDK (để lấy thông tin người dùng từ UID)
+// Admin SDK không cần đầy đủ config, nó tự nhận diện khi chạy trong môi trường Google
+let adminApp;
+if (!getApps().length) {
+    adminApp = initializeAdminApp();
+} else {
+    adminApp = getApps()[0];
+}
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Hàm chính để chạy
 async function sendReminders() {
   console.log("Initializing Firebase...");
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  const auth = getAuth(app);
+  const authAdmin = getAuth(adminApp);
   console.log("Firebase initialized. Starting deadline check...");
 
-  // Lấy ngày mai
-  const today = new Date();
   const tomorrow = new Date();
-  tomorrow.setDate(today.getDate() + 1);
+  tomorrow.setDate(new Date().getDate() + 1);
   const year = tomorrow.getFullYear();
   const month = String(tomorrow.getMonth() + 1).padStart(2, "0");
   const day = String(tomorrow.getDate()).padStart(2, "0");
   const tomorrowISO = `${year}-${month}-${day}`;
 
-  // 1. Tìm các công việc đến hạn vào ngày mai
   const q = query(
     collection(db, "todos"),
     where("dueDate", "==", tomorrowISO),
@@ -45,7 +53,6 @@ async function sendReminders() {
     return;
   }
 
-  // 2. Gom công việc theo từng người dùng
   const tasksByUser = {};
   snapshot.forEach((doc) => {
     const task = doc.data();
@@ -57,19 +64,16 @@ async function sendReminders() {
 
   console.log(`Found tasks for ${Object.keys(tasksByUser).length} user(s).`);
 
-  // 3. Gửi email cho từng người
   for (const uid in tasksByUser) {
     try {
-      // Lấy thông tin người dùng từ UID
-      const userRecord = await getUser(auth, uid);
+      const userRecord = await authAdmin.getUser(uid);
       const userEmail = userRecord.email;
       const tasks = tasksByUser[uid];
 
       console.log(`Sending email to ${userEmail}...`);
       
-      // Soạn và gửi email bằng Resend
       await resend.emails.send({
-        from: 'Todo App <onboarding@resend.dev>', // Resend yêu cầu dùng domain này cho gói miễn phí
+        from: 'Todo App Reminders <onboarding@resend.dev>',
         to: userEmail,
         subject: `🔔 Nhắc nhở: Bạn có ${tasks.length} công việc sắp đến hạn!`,
         html: `
@@ -88,5 +92,4 @@ async function sendReminders() {
   }
 }
 
-// Chạy hàm
 sendReminders();
