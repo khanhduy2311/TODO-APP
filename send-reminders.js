@@ -1,8 +1,7 @@
-// send-reminders.js - PHIÊN BẢN SỬA LỖI IMPORT
+// send-reminders.js - PHIÊN BẢN SỬA LỖI CUỐI CÙNG
 
 import { initializeApp as initializeClientApp } from "firebase/app";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-// SỬA LẠI CÁC DÒNG IMPORT CỦA FIREBASE ADMIN
 import { initializeApp as initializeAdminApp, getApps, getApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { Resend } from "resend";
@@ -16,10 +15,14 @@ const firebaseConfig = {
   appId: process.env.VITE_APP_ID,
 };
 
-// Khởi tạo Admin SDK một cách an toàn để tránh lỗi "already exists"
+// Khởi tạo Admin SDK một cách an toàn
 let adminApp;
 if (!getApps().length) {
-    adminApp = initializeAdminApp();
+    // ***** DÒNG SỬA LỖI NẰM Ở ĐÂY *****
+    // Cung cấp Project ID cho Admin SDK
+    adminApp = initializeAdminApp({
+        projectId: process.env.VITE_PROJECT_ID,
+    });
 } else {
     adminApp = getApp();
 }
