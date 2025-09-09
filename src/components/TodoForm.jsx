@@ -8,16 +8,14 @@ function TodoForm({ addTodo, selectedDate }) {
     if (selectedDate) {
 
       const year = selectedDate.getFullYear();
-      
       const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
       
       const day = String(selectedDate.getDate()).padStart(2, '0');
-
       const formattedDate = `${year}-${month}-${day}`;
 
       setDueDate(formattedDate);
     }
-  }, [selectedDate]); 
+  }, [selectedDate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

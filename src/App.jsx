@@ -128,7 +128,7 @@ function App() {
       <h1>To-do app</h1>
       <div className="main-container">
         <div className="wrapper">
-          <TodoForm addTodo={addTodo} />
+          <TodoForm addTodo={addTodo} selectedDate={selectedDate}/>
           <TodoList
             todos={filteredTodos}
             toggleTodo={toggleTodo}
