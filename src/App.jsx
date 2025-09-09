@@ -122,13 +122,13 @@ function App() {
         </button>
         <div className={`dropdown-menu ${isMenuOpen ? 'active' : ''}`}>
           <ul>
-            <li><button>Tasks</button></li>
-            {/* THÊM NÚT CHUYỂN ĐỔI THEME VÀO MENU */}
             <li>
               <button onClick={toggleTheme}>
                 {theme === 'light' ? 'Dark Mode 🌙' : 'Light Mode ☀️'}
               </button>
             </li>
+            <li><button>Tasks</button></li>
+            {/* THÊM NÚT CHUYỂN ĐỔI THEME VÀO MENU */}
             <li><button onClick={handleLogout}>Sign Out</button></li>
           </ul>
         </div>
