@@ -30,7 +30,7 @@ body {
 
 h1 {
   margin-bottom: 30px;
-  font-size: 3.5rem;
+  font-size: 3.0rem;
   font-weight: 800;
   text-transform: uppercase;
   text-align: center;
@@ -298,9 +298,8 @@ input[type="checkbox"] {
 .calendar-header button:hover {
     color: #00e6b8;
 }
-
 .calendar-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: var(--accent-color);
     margin: 0;
 }
