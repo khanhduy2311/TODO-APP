@@ -548,11 +548,3 @@ body.dark-theme .user-menu-container {
   font-weight: 600; 
   color: #00ffab;
 }
-.list-title {
-  font-size: 1.3rem;
-  color: var(--accent-color);
-  margin-top: 20px;
-  margin-bottom: -10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--secondary-color);
-}
