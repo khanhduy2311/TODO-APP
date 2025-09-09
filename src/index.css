@@ -426,7 +426,7 @@ input[type="checkbox"] {
   gap: 15px;
   z-index: 1000;
   font-size: 0.8rem; 
-  font-weight: 300;
+  font-weight: 600;
   color:#a965d3/* Đảm bảo menu nằm trên các phần tử khác */
 }
 
@@ -535,4 +535,16 @@ body.dark-theme .dropdown-menu button:hover {
 /* Đảm bảo svg cũng có màu phù hợp */
 body.dark-theme .menu-toggle-btn svg {
   stroke: var(--accent-color);
+}
+body.dark-theme .user-menu-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 1000;
+  font-size: 0.8rem; 
+  font-weight: 600; 
+  color: #00ffab;
 }
