@@ -95,7 +95,7 @@ function App() {
     <>
       <div style={{ position: 'absolute', top: 20, right: 20 }}>
         <span>Hi, {user.email}</span>
-        <button onClick={handleLogout} style={{ marginLeft: '10px' }}>Sign Out</button>
+        <button onClick={handleLogout} id = "add-button" style={{ marginLeft: '12px' }}>Sign Out</button>
       </div>
       <h1>To-do app</h1>
       <div className="main-container">

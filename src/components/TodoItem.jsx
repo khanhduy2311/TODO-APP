@@ -32,9 +32,9 @@ function TodoItem({ todo, toggleTodo, deleteTodo }) {
       </label>
       
       {/* Hiển thị deadline nếu có */}
-      {todo.dueDate && (
+      {/*todo.dueDate && (
         <span className="deadline-date">Deadline: {formattedDueDate}</span>
-      )}
+      )*}
 
       {/* Nút xóa */}
       <button className="delete-button" onClick={() => deleteTodo(todo.id)}>
