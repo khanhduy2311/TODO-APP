@@ -501,11 +501,3 @@ input[type="checkbox"] {
   background-color: var(--primary-color);
   color: var(--accent-color);
 }
-.list-title {
-  font-size: 1.3rem;
-  color: var(--accent-color);
-  margin-top: 20px;
-  margin-bottom: -10px; /* Giảm khoảng cách với danh sách bên dưới */
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--secondary-color);
-}
