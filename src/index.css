@@ -556,7 +556,7 @@ body.dark-theme .todo .todo-text {
     transition: 200ms ease;
 }
 body.dark-theme .calendar-grid .current-day {
-    background-color: #00ffab;
+    background-color: #4db6ac;
     color: #ffffff;
     font-weight: 700;
 }
