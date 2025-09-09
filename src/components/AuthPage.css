@@ -215,44 +215,36 @@ body.dark-theme .auth-body {
   background: var(--background);
 }
 
-/* Nền của container chính */
 body.dark-theme .auth-container {
   background-color: var(--primary-color);
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px var(--shadow-light);
 }
 
-/* Nền của các form bên trong */
 body.dark-theme .auth-container form {
   background-color: var(--primary-color);
 }
 
-/* Tiêu đề "Sign In", "Create Account" */
 body.dark-theme .auth-container h1 {
-  color: var(--accent-color); /* Màu xanh lá neon */
+  color: var(--accent-color); 
 }
 
-/* Các dòng chữ nhỏ */
 body.dark-theme .auth-container span,
 body.dark-theme .auth-container a {
   color: var(--text-color);
 }
 
-/* Ô input */
 body.dark-theme .auth-container input {
-  background-color: #31363e; /* Màu nền đen sẫm hơn */
+  background-color: #31363e;
   color: var(--text-color);
   border: 1px solid #444;
 }
 
-/* Nút bấm chính */
 body.dark-theme .auth-container button {
-  background-color: var(--accent-color); /* Xanh lá neon */
+  background-color: var(--accent-color);
   border-color: var(--accent-color);
-  color: #1a1e23; /* Chữ màu đen để nổi bật trên nền xanh */
+  color: #1a1e23;
 }
 
-/* Lớp overlay màu tím */
 body.dark-theme .overlay {
-  /* Giữ nguyên màu tím để tạo điểm nhấn tương phản */
   background: linear-gradient(to right, #7A52B3, #532E8F);
 }
