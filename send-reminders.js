@@ -1,12 +1,12 @@
-// send-reminders.js - PHIÊN BẢN SỬA LỖI
+// send-reminders.js - PHIÊN BẢN SỬA LỖI IMPORT
 
-// Dùng cú pháp 'import' thay vì 'require'
-import { initializeApp, getApps } from "firebase/app";
+import { initializeApp as initializeClientApp } from "firebase/app";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-import { initializeApp as initializeAdminApp, getAuth } from "firebase-admin/auth";
+// SỬA LẠI CÁC DÒNG IMPORT CỦA FIREBASE ADMIN
+import { initializeApp as initializeAdminApp, getApps, getApp } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
 import { Resend } from "resend";
 
-// Cấu hình Firebase Client SDK (để đọc dữ liệu)
 const firebaseConfig = {
   apiKey: process.env.VITE_API_KEY,
   authDomain: process.env.VITE_AUTH_DOMAIN,
@@ -16,21 +16,20 @@ const firebaseConfig = {
   appId: process.env.VITE_APP_ID,
 };
 
-// Cấu hình Firebase Admin SDK (để lấy thông tin người dùng từ UID)
-// Admin SDK không cần đầy đủ config, nó tự nhận diện khi chạy trong môi trường Google
+// Khởi tạo Admin SDK một cách an toàn để tránh lỗi "already exists"
 let adminApp;
 if (!getApps().length) {
     adminApp = initializeAdminApp();
 } else {
-    adminApp = getApps()[0];
+    adminApp = getApp();
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendReminders() {
-  console.log("Initializing Firebase...");
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  console.log("Initializing Firebase Client...");
+  const clientApp = initializeClientApp(firebaseConfig);
+  const db = getFirestore(clientApp);
   const authAdmin = getAuth(adminApp);
   console.log("Firebase initialized. Starting deadline check...");
 
@@ -87,7 +86,7 @@ async function sendReminders() {
       });
       console.log(`Email sent successfully to ${userEmail}`);
     } catch (error) {
-      console.error(`Failed to send email for UID: ${uid}`, error);
+      console.error(`Failed to send email for UID: ${uid}`, error.message);
     }
   }
 }
