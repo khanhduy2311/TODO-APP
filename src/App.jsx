@@ -1,27 +1,19 @@
-// src/App.jsx - PHIÊN BẢN GỐC + DARK/LIGHT MODE
+// src/App.jsx - PHIÊN BẢN HOÀN CHỈNH (SẮP XẾP THEO DEADLINE)
 
 import { useState, useEffect, useRef } from 'react';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import Calendar from './components/Calendar';
-import Auth from './components/Auth';
+import Auth from './components/Auth'; // Hoặc AuthPage nếu bạn đã đổi tên
 import { auth, db } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { 
-  collection, 
-  query, 
-  where, 
-  onSnapshot, 
-  addDoc, 
-  doc, 
-  updateDoc, 
-  deleteDoc 
+  collection, query, where, onSnapshot, addDoc, 
+  doc, updateDoc, deleteDoc, orderBy
 } from 'firebase/firestore';
 
 
 function App() {
-  // Lấy theme đã lưu, nếu không có thì mặc định là 'light'
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [todos, setTodos] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [user, setUser] = useState(null); 
@@ -30,13 +22,10 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null); 
 
-  // useEffect để áp dụng theme và lưu vào localStorage
-  useEffect(() => {
-    document.body.classList.toggle('dark-theme', theme === 'dark');
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+  // THÊM MỚI: State để quản lý chế độ xem (view)
+  const [currentView, setCurrentView] = useState('calendar'); // 'calendar' hoặc 'allTasks'
 
-  // Các useEffect và hàm gốc của bạn được giữ nguyên
+  // useEffect cho auth và click ngoài menu (giữ nguyên)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -57,16 +46,23 @@ function App() {
     };
   }, [menuRef]);
 
+  // SỬA LẠI: useEffect để lấy dữ liệu được sắp xếp theo DEADLINE
   useEffect(() => {
     if (user) {
-      const q = query(collection(db, 'todos'), where('uid', '==', user.uid));
+      // Query này sẽ cần một INDEX MỚI trong Firestore.
+      const q = query(
+        collection(db, 'todos'), 
+        where('uid', '==', user.uid),
+        orderBy('dueDate', 'asc') // Sắp xếp theo dueDate tăng dần (gần nhất lên trước)
+      );
+
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const todosData = [];
         querySnapshot.forEach((doc) => {
           todosData.push({ ...doc.data(), id: doc.id });
         });
         setTodos(todosData);
-      });
+      }, (error) => console.error("Lỗi Firestore (Cần tạo Index?):", error));
 
       return () => unsubscribe();
     } else {
@@ -74,6 +70,7 @@ function App() {
     }
   }, [user]); 
   
+  // Giữ nguyên các hàm xử lý todo từ file gốc của bạn
   const addTodo = async (text, dueDate) => {
     if (!user) return;
     await addDoc(collection(db, 'todos'), {
@@ -96,19 +93,31 @@ function App() {
   };
   
   const handleLogout = () => { signOut(auth); };
-
-  // Hàm để chuyển đổi theme
-  const toggleTheme = () => {
-    setTheme(currentTheme => (currentTheme === 'light' ? 'dark' : 'light'));
-    setIsMenuOpen(false); // Đóng menu sau khi chọn
-  };
   
+  // THÊM MỚI: Các hàm quản lý chế độ xem
+  const showAllTasks = () => {
+    setCurrentView('allTasks');
+    setIsMenuOpen(false); // Đóng menu
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setCurrentView('calendar'); // Chuyển về chế độ xem theo ngày
+  };
+
+  // Logic lọc và hiển thị
   const filteredTodos = todos.filter(todo => {
     if (!todo.dueDate) return false;
     const todoDate = new Date(todo.dueDate);
     const localTodoDate = new Date(todoDate.getUTCFullYear(), todoDate.getUTCMonth(), todoDate.getUTCDate());
     return localTodoDate.toDateString() === selectedDate.toDateString();
   });
+  
+  const todosToDisplay = currentView === 'allTasks' ? todos : filteredTodos;
+
+  const listTitle = currentView === 'allTasks' 
+    ? 'All Tasks by Deadline' 
+    : `Tasks for ${selectedDate.toLocaleDateString('en-GB')}`;
 
   if (loading) { return <div>Loading...</div>; }
   if (!user) { return <Auth />; }
@@ -122,13 +131,7 @@ function App() {
         </button>
         <div className={`dropdown-menu ${isMenuOpen ? 'active' : ''}`}>
           <ul>
-            <li><button>Tasks</button></li>
-            {/* THÊM NÚT CHUYỂN ĐỔI THEME VÀO MENU */}
-            <li>
-              <button onClick={toggleTheme}>
-                {theme === 'light' ? 'Dark Mode 🌙' : 'Light Mode ☀️'}
-              </button>
-            </li>
+            <li><button onClick={showAllTasks}>Tasks</button></li>
             <li><button onClick={handleLogout}>Sign Out</button></li>
           </ul>
         </div>
@@ -138,15 +141,16 @@ function App() {
       <div className="main-container">
         <div className="wrapper">
           <TodoForm addTodo={addTodo} />
+          <h2 className="list-title">{listTitle}</h2>
           <TodoList
-            todos={filteredTodos}
+            todos={todosToDisplay}
             toggleTodo={toggleTodo}
             deleteTodo={deleteTodo}
           />
         </div>
         <Calendar
           selectedDate={selectedDate}
-          onDateChange={setSelectedDate}
+          onDateChange={handleDateChange}
           todos={todos}
         />
       </div>
