@@ -14,12 +14,8 @@ const firebaseConfig = {
   messagingSenderId: process.env.VITE_MESSAGING_SENDER_ID,
   appId: process.env.VITE_APP_ID,
 };
-
-// SỬA LẠI: initializeAdminApp() sẽ tự động tìm key từ biến môi trường
 let adminApp;
 if (!getApps().length) {
-    // Khi chạy trên máy, GOOGLE_APPLICATION_CREDENTIALS chưa có,
-    // nhưng Admin SDK đủ thông minh để tự tìm file google-credentials.json
     adminApp = initializeAdminApp({
         projectId: process.env.VITE_PROJECT_ID,
     });
@@ -77,10 +73,10 @@ async function sendReminders() {
       await resend.emails.send({
         from: 'Todo App Reminders <onboarding@resend.dev>',
         to: userEmail,
-        subject: `🔔 Nhắc nhở: Bạn có ${tasks.length} công việc sắp đến hạn!`,
+        subject: `🔔 Nhắc nhở: Bạn có ${tasks.length} công việc vào ngày mai!`,
         html: `
           <h1>Xin chào ${userRecord.displayName || ''},</h1>
-          <p>Đây là lời nhắc cho các công việc sẽ hết hạn vào ngày mai:</p>
+          <p>Đây là lời nhắc cho các công việc vào ngày mai:</p>
           <ul>
             ${tasks.map((t) => `<li>${t.text}</li>`).join('')}
           </ul>
