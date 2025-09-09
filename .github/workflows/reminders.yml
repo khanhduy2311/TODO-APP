@@ -1,15 +1,16 @@
-# .github/workflows/reminders.yml - PHIÊN BẢN SỬA LỖI
 
 name: Send Deadline Reminders
 
 on:
   schedule:
-    - cron: '0 1 * * *' 
+    - cron: '1 6 * * *' 
+  
   workflow_dispatch:
 
 jobs:
   send-reminders:
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -18,13 +19,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+      - name: Decode Firebase Service Account Key
+        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY_BASE64 }}" | base64 --decode > ${{ github.workspace }}/google-credentials.json
 
       - name: Install dependencies for script
-        # SỬA LẠI DÒNG NÀY ĐỂ CÀI ĐÚNG THƯ VIỆN
         run: npm install firebase firebase-admin resend
 
       - name: Run reminder script
         env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/google-credentials.json
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
           VITE_AUTH_DOMAIN: ${{ secrets.VITE_AUTH_DOMAIN }}

@@ -15,11 +15,11 @@ const firebaseConfig = {
   appId: process.env.VITE_APP_ID,
 };
 
-// Khởi tạo Admin SDK một cách an toàn
+// SỬA LẠI: initializeAdminApp() sẽ tự động tìm key từ biến môi trường
 let adminApp;
 if (!getApps().length) {
-    // ***** DÒNG SỬA LỖI NẰM Ở ĐÂY *****
-    // Cung cấp Project ID cho Admin SDK
+    // Khi chạy trên máy, GOOGLE_APPLICATION_CREDENTIALS chưa có,
+    // nhưng Admin SDK đủ thông minh để tự tìm file google-credentials.json
     adminApp = initializeAdminApp({
         projectId: process.env.VITE_PROJECT_ID,
     });
