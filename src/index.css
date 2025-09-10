@@ -714,7 +714,7 @@ body.dark-theme .tasks-popup h3 {
   position: fixed;
   bottom: 20px;
   right: 20px; /* chừa chỗ cho Calendar */
-  width: 280px;
+  width: 250px;
   height: 350px;
   background: var(--primary-color);
   border-radius: 12px;
