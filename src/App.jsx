@@ -1,10 +1,9 @@
-// src/App.jsx - PHIÊN BẢN SỬA LỖI GIAO DIỆN LOGIN KHI Ở DARK MODE
-
+// App.jsx
 import { useState, useEffect, useRef } from 'react';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import Calendar from './components/Calendar';
-import Auth from './components/Auth'; // Hoặc AuthPage
+import Auth from './components/Auth';
 import { auth, db } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { 
@@ -18,18 +17,16 @@ function App() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true); 
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef(null); 
+  const [showTasksPopup, setShowTasksPopup] = useState(false); // NEW
 
-  // ***** SỬA LẠI useEffect CỦA THEME *****
-  // Logic này giờ sẽ áp dụng theme cho TOÀN BỘ trang, bất kể đã đăng nhập hay chưa.
+  const menuRef = useRef(null);
+
   useEffect(() => {
     document.body.classList.toggle('dark-theme', theme === 'dark');
     localStorage.setItem('theme', theme);
-  }, [theme]); // Chỉ phụ thuộc vào theme
+  }, [theme]);
 
-  // Các useEffect và hàm gốc của bạn được giữ nguyên
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -65,7 +62,7 @@ function App() {
       setTodos([]);
     }
   }, [user]); 
-  
+
   const addTodo = async (text, dueDate) => {
     if (!user) return;
     await addDoc(collection(db, 'todos'), {
@@ -86,14 +83,14 @@ function App() {
       await updateDoc(todoRef, { completed: !todoToToggle.completed });
     }
   };
-  
+
   const handleLogout = () => { signOut(auth); };
 
   const toggleTheme = () => {
     setTheme(currentTheme => (currentTheme === 'light' ? 'dark' : 'light'));
     setIsMenuOpen(false);
   };
-  
+
   const filteredTodos = todos.filter(todo => {
     if (!todo.dueDate) return false;
     const todoDate = new Date(todo.dueDate);
@@ -101,9 +98,11 @@ function App() {
     return localTodoDate.toDateString() === selectedDate.toDateString();
   });
 
-  if (loading) { return <div>Loading...</div>; }
-  
-  if (!user) { return <Auth />; }
+  // Sort tasks by deadline ascending
+  const sortedTodos = [...todos].filter(t => t.dueDate).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
+  if (loading) return <div>Loading...</div>;
+  if (!user) return <Auth />;
 
   return (
     <>
@@ -119,11 +118,33 @@ function App() {
                 {theme === 'light' ? 'Dark Mode 🌙' : 'Light Mode ☀️'}
               </button>
             </li>
-            <li><button>Tasks</button></li>
+            <li>
+              <button onClick={() => { setShowTasksPopup(true); setIsMenuOpen(false); }}>
+                Tasks
+              </button>
+            </li>
             <li><button onClick={handleLogout}>Sign Out</button></li>
           </ul>
         </div>
       </div>
+
+      {/* Popup hiển thị danh sách task */}
+      {showTasksPopup && (
+        <div className="tasks-popup-overlay" onClick={() => setShowTasksPopup(false)}>
+          <div className="tasks-popup" onClick={e => e.stopPropagation()}>
+            <h3>All Tasks (by deadline)</h3>
+            <ul>
+              {sortedTodos.map(todo => (
+                <li key={todo.id}>
+                  <span>{todo.text}</span>
+                  <small>{new Date(todo.dueDate).toLocaleDateString('vi-VN')}</small>
+                </li>
+              ))}
+            </ul>
+            <button onClick={() => setShowTasksPopup(false)}>Close</button>
+          </div>
+        </div>
+      )}
 
       <h1>To-do app</h1>
       <div className="main-container">
