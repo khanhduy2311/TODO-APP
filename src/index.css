@@ -709,4 +709,71 @@ body.dark-theme .tasks-popup h3 {
   background: var(--primary-color);
   color: var(--accent-color);
 }
+.chat-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  background: var(--primary-color);
+  border-radius: var(--border-radius-small);
+  box-shadow: 0 4px 12px var(--shadow-light);
+  display: flex;
+  flex-direction: column;
+  z-index: 3000;
+}
+
+.chat-header {
+  padding: 8px 12px;
+  background: var(--accent-color);
+  color: var(--background);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: var(--border-radius-small);
+  max-width: 80%;
+}
+
+.chat-message.me {
+  background: var(--accent-color);
+  color: var(--background);
+  margin-left: auto;
+}
+
+.chat-message.them {
+  background: var(--secondary-color);
+  color: var(--text-color);
+  margin-right: auto;
+}
+
+.chat-input {
+  display: flex;
+  border-top: 1px solid var(--secondary-color);
+}
+
+.chat-input input {
+  flex: 1;
+  border: none;
+  padding: 8px;
+  font: inherit;
+}
+
+.chat-input button {
+  background: var(--accent-color);
+  border: none;
+  padding: 8px 12px;
+  color: var(--background);
+  cursor: pointer;
+}
 
