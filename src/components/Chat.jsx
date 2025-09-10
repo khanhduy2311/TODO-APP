@@ -58,7 +58,7 @@ function Chat({ currentUser, otherUser, onClose }) {
   return (
     <div className="chat-popup">
       <div className="chat-header">
-        <span>Chat với {otherUser.displayName || otherUser.email}</span>
+        <span>{otherUser.displayName || otherUser.email}</span>
         <button onClick={onClose}>×</button>
       </div>
 
