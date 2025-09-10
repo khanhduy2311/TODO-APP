@@ -3,7 +3,7 @@ name: Send Deadline Reminders
 
 on:
   schedule:
-    - cron: '1 4 * * *' 
+    - cron: '0 14 * * *' 
   
   workflow_dispatch:
 
