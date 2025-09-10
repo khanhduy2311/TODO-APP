@@ -669,6 +669,7 @@ body.dark-theme .tasks-popup h3 {
 }
 
 /* Submenu cho Tasks */
+/* Submenu cho Tasks */
 .submenu {
   position: relative;
 }
@@ -683,7 +684,7 @@ body.dark-theme .tasks-popup h3 {
   width: 160px;
   z-index: 1500;
 }
-.submenu:hover .submenu-items {
+.submenu-items.active {
   display: block;
 }
 .submenu-items button {
@@ -700,3 +701,4 @@ body.dark-theme .tasks-popup h3 {
   background: var(--primary-color);
   color: var(--accent-color);
 }
+

@@ -19,7 +19,8 @@ function App() {
   const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [tasksPopupType, setTasksPopupType] = useState(null); // all | upcoming | completed | overdue
+  const [isTasksOpen, setIsTasksOpen] = useState(false); // NEW: submenu toggle
+  const [tasksPopupType, setTasksPopupType] = useState(null); 
 
   const menuRef = useRef(null);
 
@@ -40,6 +41,7 @@ function App() {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
+        setIsTasksOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -99,7 +101,6 @@ function App() {
     return localTodoDate.toDateString() === selectedDate.toDateString();
   });
 
-  // Helper: lọc tasks theo loại popup
   const getTasksByType = (type) => {
     const today = new Date();
     if (type === "all") {
@@ -145,12 +146,12 @@ function App() {
 
             {/* Submenu Tasks */}
             <li className="submenu">
-              <button>Tasks ▸</button>
-              <ul className="submenu-items">
-                <li><button onClick={() => { setTasksPopupType("all"); setIsMenuOpen(false); }}>All</button></li>
-                <li><button onClick={() => { setTasksPopupType("upcoming"); setIsMenuOpen(false); }}>Upcoming</button></li>
-                <li><button onClick={() => { setTasksPopupType("completed"); setIsMenuOpen(false); }}>Completed</button></li>
-                <li><button onClick={() => { setTasksPopupType("overdue"); setIsMenuOpen(false); }}>Overdue</button></li>
+              <button onClick={() => setIsTasksOpen(!isTasksOpen)}>Tasks ▸</button>
+              <ul className={`submenu-items ${isTasksOpen ? 'active' : ''}`}>
+                <li><button onClick={() => { setTasksPopupType("all"); setIsMenuOpen(false); setIsTasksOpen(false); }}>All</button></li>
+                <li><button onClick={() => { setTasksPopupType("upcoming"); setIsMenuOpen(false); setIsTasksOpen(false); }}>Upcoming</button></li>
+                <li><button onClick={() => { setTasksPopupType("completed"); setIsMenuOpen(false); setIsTasksOpen(false); }}>Completed</button></li>
+                <li><button onClick={() => { setTasksPopupType("overdue"); setIsMenuOpen(false); setIsTasksOpen(false); }}>Overdue</button></li>
               </ul>
             </li>
 
