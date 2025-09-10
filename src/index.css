@@ -560,3 +560,42 @@ body.dark-theme .calendar-grid .current-day {
     color: #ffffff;
     font-weight: 700;
 }
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  /* Giới hạn chiều cao tối đa để tránh tràn màn hình trên các thiết bị nhỏ */
+  max-height: 85vh; 
+}
+
+/* 2. Làm cho danh sách công việc (#todo-list) có thể cuộn */
+#todo-list {
+  /* overflow-y: auto; sẽ tự động thêm thanh cuộn dọc KHI CẦN THIẾT */
+  overflow-y: auto; 
+
+  /* Giới hạn chiều cao tối đa của danh sách. Bạn có thể điều chỉnh số này */
+  /* vh là đơn vị % chiều cao của màn hình (viewport height) */
+  max-height: 50vh; 
+  
+  /* Thêm một chút khoảng trống bên phải để thanh cuộn không che mất nội dung */
+  padding-right: 10px;
+}
+
+/* 3. Tinh chỉnh thanh cuộn cho đẹp hơn (tùy chọn) */
+#todo-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+#todo-list::-webkit-scrollbar-track {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+#todo-list::-webkit-scrollbar-thumb {
+  background-color: var(--secondary-color);
+  border-radius: 10px;
+  border: 2px solid var(--primary-color);
+}
+
+#todo-list::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-color);
+}
