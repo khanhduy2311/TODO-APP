@@ -1,11 +1,11 @@
-
 import { useState } from 'react';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
   updateProfile 
 } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
 import './AuthPage.css';
 
 function AuthPage() {
@@ -23,9 +23,20 @@ function AuthPage() {
     setError('');
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword);
-      await updateProfile(userCredential.user, {
+      const user = userCredential.user;
+
+      // Cập nhật displayName
+      await updateProfile(user, {
         displayName: signUpName
       });
+
+      // Lưu thông tin user vào Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        displayName: signUpName || ""
+      });
+
     } catch (err) {
       setError(err.message.replace('Firebase: ', ''));
     }
@@ -70,7 +81,7 @@ function AuthPage() {
           </form>
         </div>
         
-        {/* Lớp Overlay với hiệu ứng trượt */}
+        {/* Lớp Overlay */}
         <div className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-left">
@@ -89,6 +100,5 @@ function AuthPage() {
     </div>
   );
 }
-
 
 export default AuthPage;
