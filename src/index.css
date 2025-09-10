@@ -1,664 +1,413 @@
 :root {
   --background: #ffffff;
-  --primary-color: #f3f0ff;
-  --secondary-color: #bf9cff;
-  --accent-color: #8e51b3;
-  --text-color: #1a1a1a;
-  --placeholder-color: #777;
-  --border-radius-main: 15px;
-  --border-radius-small: 8px;
-  --shadow-light: rgba(0, 0, 0, 0.15);
+  --surface: #f8faff;
+  --surface-secondary: #f0f4ff;
+  --primary: #6366f1;
+  --primary-light: #8b5cf6;
+  --primary-dark: #4f46e5;
+  --accent: #06d6a0;
+  --accent-light: #26de81;
+  --warning: #fbbf24;
+  --error: #ef4444;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --border-radius: 12px;
+  --border-radius-lg: 16px;
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+body.dark-theme {
+  --background: #0f172a;
+  --surface: #1e293b;
+  --surface-secondary: #334155;
+  --primary: #8b5cf6;
+  --primary-light: #a78bfa;
+  --primary-dark: #7c3aed;
+  --accent: #10b981;
+  --accent-light: #34d399;
+  --warning: #f59e0b;
+  --error: #f87171;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border: #475569;
+  --border-light: #334155;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 html {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 16pt;
-  color: var(--text-color);
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
-  padding: 20px;
-  background-color: var(--background);
+  background: linear-gradient(135deg, var(--background) 0%, var(--surface) 100%);
+  transition: var(--transition);
+}
+
+/* Header */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-light);
+  padding: 1rem 2rem;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
 }
 
-h1 {
-  margin-bottom: 30px;
-  font-size: 2.5rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--accent-color);
-  letter-spacing: 2px;
+body.dark-theme .app-header {
+  background: rgba(15, 23, 42, 0.9);
 }
 
-/* Auth Box */
-#auth-container {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:100%;
+.app-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.auth-box {
-  background: var(--primary-color);
-  padding:30px;
-  border-radius: var(--border-radius-main);
-  box-shadow:0 10px 30px var(--shadow-light);
-  text-align:center;
-  max-width:400px;
-  width:100%;
-}
-
-.auth-box input {
-  width:100%;
-  padding:12px 15px;
-  margin:10px 0;
-  border:1px solid var(--secondary-color);
-  border-radius: var(--border-radius-small);
-  font:inherit;
-}
-
-.auth-buttons {
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.auth-buttons button {
-  flex:1;
-  background: var(--accent-color);
-  color: var(--background);
-  padding:10px;
-  border:none;
-  border-radius: var(--border-radius-small);
-  cursor:pointer;
-  font-weight:600;
-}
-.main-container {
-    display: flex;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    gap: 30px;
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 20px;
-}
-
-.wrapper, .calendar-widget {
-    background-color: var(--primary-color);
-    border-radius: var(--border-radius-main);
-    box-shadow: 0 10px 30px var(--shadow-light);
-    padding: 30px;
-    flex: 1; /* Allow flex items to grow and shrink */
-    min-width: 350px; /* Minimum width for each section */
-}
-
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-form {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-#todo-input {
-    padding: 15px 20px;
-    width: 100%;
-    background: var(--background);
-    border: 2px solid var(--secondary-color);
-    border-radius: var(--border-radius-small);
-    font: inherit;
-    color: var(--text-color);
-    caret-color: var(--accent-color);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-#todo-input::placeholder {
-    color: var(--placeholder-color);
-}
-
-#todo-input:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(0, 255, 196, 0.3);
-}
-
-#due-date-input {
-    padding: 10px 15px;
-    background: var(--background);
-    border: 1px solid var(--secondary-color);
-    border-radius: var(--border-radius-small);
-    font: inherit;
-    color: var(--text-color);
-    -webkit-appearance: none; /* Remove default date input styling */
-    appearance: none;
-    cursor: text;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-#due-date-input:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(0, 255, 196, 0.2);
-}
-
-/* Style for the date input picker icon (browser-specific, hard to override fully) */
-input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1) brightness(1.5); /* Make the icon more visible on dark theme */
-    cursor: pointer;
-}
-
-#add-button {
-    background-color: var(--accent-color);
-    padding: 12px 25px;
-    border: none;
-    border-radius: var(--border-radius-small);
-    font: inherit;
-    font-weight: 600;
-    color: var(--background);
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#add-button:hover {
-    background-color: #00e6b8;
-    transform: translateY(-2px);
-}
-
-#todo-list {
-    list-style: none;
-    padding: 0;
-    margin-top: 20px;
-}
-
-.todo {
-    margin-bottom: 12px;
-    padding: 12px 16px;
-    background-color: var(--background);
-    border-radius: var(--border-radius-small);
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    box-shadow: 0 2px 8px var(--shadow-light);
-    transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.todo:hover {
-    transform: translateX(5px);
-}
-
-.todo .todo-text {
-    flex-grow: 1;
-    font-size: 0.8rem;
-    line-height: 1.2;
-    transition: 200ms ease;
-}
-
-.todo .deadline-date {
-    font-size: 0.85em;
-    color: var(--secondary-color);
-    margin-left: auto; /* Push deadline to the right */
-    white-space: nowrap; /* Prevent date from wrapping */
-}
-
-.delete-button {
-    padding: 5px;
-    background: none;
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    flex-shrink: 0; /* Prevent button from shrinking */
-}
-
-.delete-button svg {
-    transition: 200ms ease;
-    fill: var(--secondary-color);
-}
-
-.delete-button:hover svg {
-    fill: #ff4757; /* A more distinct delete color */
-}
-
-.custom-checkbox {
-    border: 2px solid var(--accent-color);
-    border-radius: 50%;
-    min-height: 22px;
-    min-width: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    transition: 200ms ease;
-    cursor: pointer;
-}
-
-.custom-checkbox svg {
-    fill: transparent; /* Initial state, checkbox not checked */
-    transition: 200ms ease;
-}
-
-input[type="checkbox"]:checked ~ .custom-checkbox {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-}
-
-input[type="checkbox"]:checked ~ .custom-checkbox svg {
-    fill: var(--primary-color);
-}
-
-input[type="checkbox"]:checked ~ .todo-text,
-input[type="checkbox"]:checked ~ .deadline-date {
-    text-decoration: line-through;
-    color: var(--secondary-color);
-}
-
-input[type="checkbox"] {
-    display: none;
-}
-
-/* Calendar Widget Styles */
-.calendar-widget {
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.calendar-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.calendar-header button {
-    background: none;
-    border: none;
-    color: var(--accent-color);
-    font-size: 1.8rem;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.calendar-header button:hover {
-    color: #00e6b8;
-}
-.calendar-header h2 {
-    font-size: 1.3rem;
-    color: var(--accent-color);
-    margin: 0;
-}
-
-.calendar-grid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    text-align: center;
-}
-
-.calendar-grid div {
-    padding: 8px 0;
-    border-radius: var(--border-radius-small);
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-.calendar-grid .day-name {
-    font-weight: 700;
-    color: var(--accent-color);
-    background-color: var(--secondary-color);
-    padding: 10px 0;
-}
-
-.calendar-grid .day {
-    background-color: var(--background);
-    color: var(--text-color);
-}
-
-.calendar-grid .day:hover:not(.inactive) {
-    background-color: var(--secondary-color);
-    transform: translateY(-2px);
-}
-
-.calendar-grid .current-day {
-    background-color: var(--accent-color);
-    color: var(--background);
-    font-weight: 700;
-}
-
-.calendar-grid .selected-calendar-day {
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-    border: 2px solid var(--accent-color);
-}
-
-.calendar-grid .inactive {
-    color: var(--placeholder-color);
-    cursor: default;
-    background-color: #ca86f7; /* Slightly lighter background for inactive days */
-}
-
-.task-dot {
-    position: absolute;
-    bottom: 3px;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background-color: var(--accent-color); /* Default dot color */
-}
-.task-dot.completed-dot {
-    background-color: limegreen; /* Green for all tasks completed */
-}
-.task-dot.has-tasks-dot {
-    background-color: orangered; /* Red for some tasks remaining */
-}
-
-/* Responsive Adjustments */
-@media(max-width: 800px) {
-    .main-container {
-        flex-direction: column;
-    }
-    .wrapper, .calendar-widget {
-        min-width: unset; /* Remove min-width on small screens */
-        width: 100%;
-    }
-}
-
-@media(max-width: 500px) {
-    html {
-        font-size: 14pt;
-    }
-    h1 {
-        font-size: 2.5rem;
-    }
-    .main-container {
-        padding: 0 10px;
-    }
-    .wrapper, .calendar-widget {
-        padding: 20px;
-    }
-    form {
-        flex-direction: column;
-        gap: 15px;
-    }
-    #add-button {
-        width: 100%;
-        margin-top: 0;
-    }
-    .todo {
-        flex-wrap: wrap; /* Allow todo item content to wrap */
-        gap: 10px;
-    }
-    .todo .deadline-date {
-        flex-basis: 100%; /* Make deadline take full width on new line */
-        text-align: right;
-        margin-top: -10px; /* Adjust spacing */
-    }
-}
 .user-menu-container {
-  position: absolute;
-  top: 20px;
-  right: 20px;
   display: flex;
   align-items: center;
-  gap: 15px;
-  z-index: 1000;
-  font-size: 0.8rem; 
-  font-weight: 600;
-  color:#a965d3/* Đảm bảo menu nằm trên các phần tử khác */
+  gap: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
-/* Nút 3 gạch ngang (hamburger) */
 .menu-toggle-btn {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 5px;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.menu-toggle-btn svg {
-  stroke: var(--accent-color);
-  width: 28px;
-  height: 28px;
+.menu-toggle-btn:hover {
+  background: var(--surface);
 }
 
-/* Panel menu thả xuống */
+.menu-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-secondary);
+}
+
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 10px); /* Vị trí ngay dưới nút, có khoảng cách 10px */
+  top: calc(100% + 0.5rem);
   right: 0;
-  background-color: var(--background);
-  border-radius: var(--border-radius-small);
-  box-shadow: 0 4px 12px var(--shadow-light);
-  width: 180px;
-  overflow: hidden;
-  
-  /* --- Hiệu ứng xuất hiện mượt mà --- */
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  min-width: 200px;
   opacity: 0;
-  transform: translateY(-10px); /* Bắt đầu từ vị trí hơi cao hơn */
-  pointer-events: none; /* Không thể tương tác khi đang ẩn */
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateY(-0.5rem) scale(0.95);
+  pointer-events: none;
+  transition: var(--transition);
 }
 
-/* Trạng thái active khi menu được mở */
 .dropdown-menu.active {
   opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto; /* Cho phép tương tác khi hiện ra */
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
 
-/* Reset style cho danh sách trong menu */
 .dropdown-menu ul {
   list-style: none;
-  padding: 5px;
-  margin: 0;
+  padding: 0.5rem;
 }
 
-.dropdown-menu li {
-  font-size: 0.5rem;
-  width: 100%;
-}
-
-/* Style cho các nút trong menu */
 .dropdown-menu button {
   width: 100%;
   background: none;
   border: none;
   text-align: left;
-  padding: 10px 15px;
-  font-size: 0.8rem;
-  font-family: inherit;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
   cursor: pointer;
-  border-radius: var(--border-radius-small);
-  transition: background-color 0.2s ease;
-  color: var(--text-color);
+  border-radius: calc(var(--border-radius) - 4px);
+  transition: var(--transition);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .dropdown-menu button:hover {
-  background-color: var(--primary-color);
-  color: var(--accent-color);
-}
-body.dark-theme {
-  --background: #1a1e23; /* Màu nền đen mờ */
-  --primary-color: #252a31; /* Màu container chính, hơi sáng hơn nền */
-  --secondary-color: #4db6ac; /* Màu xanh lá nhạt hơn cho các chi tiết phụ */
-  --accent-color: #00ffab; /* Màu xanh lá NEON cho các điểm nhấn chính */
-  --text-color: #e0e0e0; /* Màu chữ trắng ngà, đỡ mỏi mắt hơn trắng tinh */
-  --placeholder-color: #888;
-  --shadow-light: rgba(0, 255, 171, 0.1); /* Đổ bóng màu xanh neon mờ */
+  background: var(--surface);
+  color: var(--primary);
 }
 
-/* Một vài tinh chỉnh nhỏ cho Dark Mode */
-body.dark-theme .calendar-grid .day {
-  background-color: #31363e; /* Nền của các ngày trong lịch */
+/* Main Container */
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
-body.dark-theme .calendar-grid .inactive {
-  background-color: #252a31; /* Nền của ngày không hoạt động */
-  color: #555;
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  align-items: start;
 }
 
-body.dark-theme .todo {
-   background-color: #31363e; /* Nền của từng mục to-do */
+/* Task Manager Section */
+.task-manager {
+  background: var(--background);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: var(--transition);
 }
 
-/* Đảm bảo nút trong menu cũng đổi màu */
-body.dark-theme .dropdown-menu button:hover {
-  background-color: rgba(0, 255, 171, 0.1);
+.task-manager:hover {
+  box-shadow: var(--shadow-lg);
 }
 
-/* Đảm bảo svg cũng có màu phù hợp */
-body.dark-theme .menu-toggle-btn svg {
-  stroke: var(--accent-color);
-}
-body.dark-theme .user-menu-container {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+.section-header {
+  padding: 1.5rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-light);
   display: flex;
   align-items: center;
-  gap: 15px;
-  z-index: 1000;
-  font-size: 0.8rem; 
-  font-weight: 600; 
-  color: #00ffab;
+  justify-content: space-between;
 }
-body.dark-theme .todo .todo-text {
-    flex-grow: 1;
-    font-size: 0.8rem;
-    line-height: 1.2;
-    color: #ffffff;
-    transition: 200ms ease;
-}
-body.dark-theme .calendar-grid .current-day {
-    background-color: #4db6ac;
-    color: #ffffff;
-    font-weight: 700;
-}
-.wrapper {
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
   display: flex;
-  flex-direction: column;
-  /* Giới hạn chiều cao tối đa để tránh tràn màn hình trên các thiết bị nhỏ */
-  max-height: 85vh; 
-}
-
-/* 2. Làm cho danh sách công việc (#todo-list) có thể cuộn */
-#todo-list {
-  /* overflow-y: auto; sẽ tự động thêm thanh cuộn dọc KHI CẦN THIẾT */
-  overflow-y: auto; 
-
-  /* Giới hạn chiều cao tối đa của danh sách. Bạn có thể điều chỉnh số này */
-  /* vh là đơn vị % chiều cao của màn hình (viewport height) */
-  max-height: 50vh; 
-  
-  /* Thêm một chút khoảng trống bên phải để thanh cuộn không che mất nội dung */
-  padding-right: 10px;
-}
-
-/* 3. Tinh chỉnh thanh cuộn cho đẹp hơn (tùy chọn) */
-#todo-list::-webkit-scrollbar {
-  width: 8px;
-}
-
-#todo-list::-webkit-scrollbar-track {
-  background: var(--primary-color);
-  border-radius: 10px;
-}
-
-#todo-list::-webkit-scrollbar-thumb {
-  background-color: var(--secondary-color);
-  border-radius: 10px;
-  border: 2px solid var(--primary-color);
-}
-
-#todo-list::-webkit-scrollbar-thumb:hover {
-  background-color: var(--accent-color);
-}
-.enhanced-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.form-row {
-  display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 0.5rem;
+}
+
+.task-stats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Enhanced Form */
+.task-form {
+  padding: 2rem;
+}
+
+.form-section {
+  margin-bottom: 1.5rem;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.task-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  color: var(--text-primary);
+  transition: var(--transition);
+  outline: none;
+}
+
+.task-input:focus {
+  border-color: var(--primary);
+  background: var(--background);
+  box-shadow: 0 0 0 3px rgb(99 102 241 / 0.1);
+}
+
+.task-input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 100px;
+  gap: 1rem;
+  align-items: end;
 }
 
 .priority-select, .category-select {
-  flex: 1;
-  padding: 10px 15px;
-  background: var(--background);
-  border: 1px solid var(--secondary-color);
-  border-radius: var(--border-radius-small);
-  font: inherit;
-  color: var(--text-color);
+  padding: 0.875rem 1rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  color: var(--text-primary);
   cursor: pointer;
+  transition: var(--transition);
+  outline: none;
+}
+
+.priority-select:focus, .category-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgb(99 102 241 / 0.1);
 }
 
 .time-input-group {
   display: flex;
   align-items: center;
-  gap: 5px;
-  min-width: 120px;
+  gap: 0.5rem;
 }
 
 .time-input {
-  width: 80px;
-  padding: 10px;
-  background: var(--background);
-  border: 1px solid var(--secondary-color);
-  border-radius: var(--border-radius-small);
-  font: inherit;
-  color: var(--text-color);
+  flex: 1;
+  padding: 0.875rem 1rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  text-align: center;
+  outline: none;
+  transition: var(--transition);
+}
+
+.time-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgb(99 102 241 / 0.1);
 }
 
 .time-label {
-  font-size: 0.9em;
-  color: var(--secondary-color);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
-/* Enhanced todo item styles */
-.enhanced-todo {
+.add-task-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-sm);
+}
+
+.add-task-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.add-task-btn:active {
+  transform: translateY(0);
+}
+
+/* Task List */
+.task-list-container {
+  padding: 0 2rem 2rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.task-list {
+  list-style: none;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--text-muted);
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Enhanced Task Item */
+.task-item {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius);
+  margin-bottom: 0.75rem;
+  transition: var(--transition);
+  overflow: hidden;
   position: relative;
-  padding: 16px;
-  margin-bottom: 15px;
-  background-color: var(--background);
-  border-radius: var(--border-radius-small);
-  box-shadow: 0 2px 8px var(--shadow-light);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border-left: 4px solid var(--secondary-color);
 }
 
-.enhanced-todo:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px var(--shadow-light);
+.task-item:hover {
+  border-color: var(--border);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.task-item.completed {
+  opacity: 0.7;
+  background: var(--surface-secondary);
+}
+
+.task-item.active-timer {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
 }
 
 .priority-indicator {
@@ -667,139 +416,503 @@ body.dark-theme .calendar-grid .current-day {
   top: 0;
   bottom: 0;
   width: 4px;
-  border-radius: 4px 0 0 4px;
 }
 
-.todo-content {
-  flex: 1;
+.priority-urgent { --priority-color: var(--error); }
+.priority-high { --priority-color: var(--warning); }
+.priority-medium { --priority-color: var(--primary); }
+.priority-low { --priority-color: var(--accent); }
+
+.task-content {
+  padding: 1.25rem 1.5rem;
+  padding-left: 4rem;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-left: 45px;
+  align-items: flex-start;
+  gap: 1rem;
 }
 
-.todo-main-row {
+.task-checkbox-container {
+  position: absolute;
+  left: 1rem;
+  top: 1.25rem;
+}
+
+.task-checkbox {
+  display: none;
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.category-emoji {
-  font-size: 1.1em;
-}
-
-.todo-text {
-  flex: 1;
-  font-size: 0.95em;
-  line-height: 1.3;
+  justify-content: center;
   cursor: pointer;
+  transition: var(--transition);
+  background: var(--background);
 }
 
-.todo-meta {
+.custom-checkbox:hover {
+  border-color: var(--primary);
+}
+
+.task-checkbox:checked + .custom-checkbox {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.custom-checkbox svg {
+  width: 14px;
+  height: 14px;
+  fill: white;
+  opacity: 0;
+  transform: scale(0);
+  transition: var(--transition);
+}
+
+.task-checkbox:checked + .custom-checkbox svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.task-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-header {
   display: flex;
-  gap: 10px;
-  font-size: 0.8em;
-  color: var(--secondary-color);
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
-.todo-details {
+.category-badge {
+  background: var(--surface-secondary);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-top: 5px;
+  gap: 0.25rem;
+  flex-shrink: 0;
 }
 
-.time-info {
+.task-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.5;
+  cursor: pointer;
+  flex: 1;
+}
+
+.task-checkbox:checked ~ .task-content .task-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.85em;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
 }
 
-.actual-time {
-  color: var(--accent-color);
+.due-date {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.priority-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.priority-urgent .priority-badge { background: rgba(239, 68, 68, 0.1); color: var(--error); }
+.priority-high .priority-badge { background: rgba(251, 191, 36, 0.1); color: var(--warning); }
+.priority-medium .priority-badge { background: rgba(99, 102, 241, 0.1); color: var(--primary); }
+.priority-low .priority-badge { background: rgba(6, 214, 160, 0.1); color: var(--accent); }
+
+.task-progress {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.time-tracking {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.time-spent {
   font-weight: 600;
+  color: var(--accent);
 }
 
-.actual-time.overtime {
-  color: #ff4757;
+.time-spent.overtime {
+  color: var(--error);
 }
 
-.estimated-time {
-  color: var(--secondary-color);
+.time-estimated {
+  color: var(--text-muted);
 }
 
 .progress-bar {
   width: 100px;
   height: 4px;
-  background-color: #e0e0e0;
+  background: var(--border-light);
   border-radius: 2px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background-color: var(--accent-color);
-  transition: width 0.3s ease;
+  background: var(--accent);
   border-radius: 2px;
+  transition: var(--transition);
 }
 
 .progress-fill.overtime {
-  background-color: #ff4757;
+  background: var(--error);
 }
 
-.todo-controls {
+.task-actions {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
   align-items: center;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
-.timer-btn {
-  padding: 6px 8px;
-  background: var(--secondary-color);
+.task-action-btn {
+  width: 32px;
+  height: 32px;
   border: none;
-  border-radius: var(--border-radius-small);
+  background: var(--surface-secondary);
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9em;
-  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  color: var(--text-secondary);
+}
+
+.task-action-btn:hover {
+  background: var(--border-light);
+  color: var(--text-primary);
 }
 
 .timer-btn.active {
-  background: var(--accent-color);
+  background: var(--accent);
+  color: white;
   animation: pulse 2s infinite;
 }
 
-.details-btn {
-  padding: 6px 8px;
-  background: var(--primary-color);
-  border: 1px solid var(--secondary-color);
-  border-radius: var(--border-radius-small);
-  cursor: pointer;
-  font-size: 0.9em;
+.delete-btn {
+  color: var(--error);
 }
 
-.todo-expanded-details {
-  margin-top: 15px;
-  padding: 15px;
-  background-color: var(--primary-color);
-  border-radius: var(--border-radius-small);
-  border: 1px solid var(--secondary-color);
+.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
 }
 
-.detail-row {
+.task-action-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* Task Details */
+.task-details {
+  padding: 1rem 1.5rem;
+  padding-left: 4rem;
+  background: var(--surface-secondary);
+  border-top: 1px solid var(--border-light);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.detail-item {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 0.85em;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.875rem;
 }
 
-.good-efficiency {
-  color: #26de81;
-  font-weight: 600;
+.detail-item:last-child {
+  border-bottom: none;
 }
 
-.poor-efficiency {
-  color: #ff4757;
+.detail-label {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.detail-value {
   font-weight: 600;
+  color: var(--text-primary);
+}
+
+.efficiency-good { color: var(--accent); }
+.efficiency-poor { color: var(--error); }
+
+/* Calendar Widget */
+.calendar-widget {
+  background: var(--background);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  position: sticky;
+  top: calc(5rem + 2rem);
+}
+
+.calendar-header {
+  padding: 1.5rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: between;
+  align-items: center;
+}
+
+.calendar-nav-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-nav-btn:hover {
+  color: var(--primary);
+  background: var(--surface-secondary);
+}
+
+.calendar-month-year {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  text-align: center;
+}
+
+.calendar-grid {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: var(--transition);
+  position: relative;
+}
+
+.calendar-day-header {
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  cursor: default;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.calendar-day:not(.calendar-day-header):hover {
+  background: var(--surface);
+}
+
+.calendar-day.current-day {
+  background: var(--primary);
+  color: white;
+}
+
+.calendar-day.selected-day {
+  background: var(--surface-secondary);
+  border: 2px solid var(--primary);
+}
+
+.calendar-day.inactive {
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.calendar-day.inactive:hover {
+  background: none;
+}
+
+.task-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.task-indicator.has-completed {
+  background: var(--accent);
+}
+
+.task-indicator.has-pending {
+  background: var(--warning);
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.task-item {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .main-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .calendar-widget {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1rem;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .task-content {
+    padding: 1rem;
+    padding-left: 3rem;
+  }
+  
+  .task-checkbox-container {
+    left: 0.75rem;
+  }
+  
+  .task-details {
+    padding-left: 3rem;
+  }
+  
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    padding: 1rem;
+  }
+  
+  .section-header {
+    padding: 1rem;
+  }
+  
+  .task-form {
+    padding: 1rem;
+  }
+  
+  .task-list-container {
+    padding: 0 1rem 1rem;
+  }
+  
+  .calendar-header {
+    padding: 1rem;
+  }
+  
+  .calendar-grid {
+    padding: 0.5rem;
+  }
+}
+
+/* Scrollbar Styling */
+.task-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.task-list-container::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 3px;
+}
+
+.task-list-container::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.task-list-container::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Focus states for accessibility */
+.task-checkbox:focus + .custom-checkbox {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.task-action-btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.calendar-nav-btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }

@@ -47,7 +47,7 @@ function TodoForm({ addTodo, selectedDate }) {
       <input
         id="todo-input"
         type="text"
-        placeholder="Add new task... (e.g., 'Study Math chapter 5')"
+        placeholder="Add new task..."
         autoComplete="off"
         value={text}
         onChange={(e) => setText(e.target.value)}
