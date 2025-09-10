@@ -652,3 +652,17 @@ body.dark-theme .calendar-grid .current-day {
   cursor: pointer;
   font-weight: 600;
 }
+/* Dark mode cho popup tasks */
+body.dark-theme .tasks-popup {
+  background: #2a2f36; /* nền tối hơn */
+  color: #ffffff;      /* chữ trắng */
+}
+
+body.dark-theme .tasks-popup li {
+  background: #3a3f47; /* nền item tối */
+  color: #ffffff;      /* chữ trắng */
+}
+
+body.dark-theme .tasks-popup h3 {
+  color: var(--accent-color); /* giữ màu nhấn neon */
+}
