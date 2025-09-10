@@ -240,7 +240,6 @@ function App() {
                 <li><button onClick={() => { setTasksPopupType("overdue"); setIsMenuOpen(false); setIsTasksOpen(false); }}>Overdue</button></li>
               </ul>
             </li>
-            <li><button onClick={() => { setShowChatPopup(true); setIsMenuOpen(false); }}>Chat 💬</button></li>
             <li><button onClick={() => { setShowAddFriend(true); setIsMenuOpen(false); }}>Add Friend 🤝</button></li>
             <li><button onClick={handleLogout}>Sign Out</button></li>
           </ul>
