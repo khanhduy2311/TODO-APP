@@ -19,7 +19,7 @@ function App() {
   const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isTasksOpen, setIsTasksOpen] = useState(false); // NEW: submenu toggle
+  const [isTasksOpen, setIsTasksOpen] = useState(false); 
   const [tasksPopupType, setTasksPopupType] = useState(null); 
 
   const menuRef = useRef(null);
@@ -146,7 +146,9 @@ function App() {
 
             {/* Submenu Tasks */}
             <li className="submenu">
-              <button onClick={() => setIsTasksOpen(!isTasksOpen)}>Tasks ▸</button>
+              <button onClick={() => setIsTasksOpen(!isTasksOpen)}>
+                Tasks {isTasksOpen ? "▾" : "▸"}
+              </button>
               <ul className={`submenu-items ${isTasksOpen ? 'active' : ''}`}>
                 <li><button onClick={() => { setTasksPopupType("all"); setIsMenuOpen(false); setIsTasksOpen(false); }}>All</button></li>
                 <li><button onClick={() => { setTasksPopupType("upcoming"); setIsMenuOpen(false); setIsTasksOpen(false); }}>Upcoming</button></li>
