@@ -1,4 +1,3 @@
-// src/components/Chat.jsx
 import { useState, useEffect, useRef } from "react";
 import { 
   collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp 
@@ -10,7 +9,6 @@ function Chat({ currentUser, otherUser, onClose }) {
   const [text, setText] = useState("");
   const messagesEndRef = useRef(null);
 
-  // Tạo chatId cố định giữa 2 user
   const chatId = [currentUser.uid, otherUser.uid].sort().join("_");
 
   // Lắng nghe tin nhắn realtime
@@ -24,7 +22,9 @@ function Chat({ currentUser, otherUser, onClose }) {
     );
 
     const unsub = onSnapshot(q, (snap) => {
-      const msgs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const msgs = snap.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(m => !!m.createdAt); // bỏ tin chưa có timestamp
       setMessages(msgs);
     });
 
@@ -34,18 +34,24 @@ function Chat({ currentUser, otherUser, onClose }) {
   // Gửi tin nhắn
   const sendMessage = async () => {
     if (!text.trim()) return;
-    await addDoc(collection(db, "messages"), {
+
+    const newMsg = {
       from: currentUser.uid,
       to: otherUser.uid,
       participants: [currentUser.uid, otherUser.uid],
       chatId,
       text,
       createdAt: serverTimestamp()
-    });
+    };
+
+    // Hiển thị local ngay (tránh delay do serverTimestamp)
+    setMessages(prev => [...prev, { ...newMsg, id: Date.now() }]);
+
+    await addDoc(collection(db, "messages"), newMsg);
     setText("");
   };
 
-  // Auto scroll xuống cuối khi có tin nhắn mới
+  // Auto scroll xuống cuối
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);

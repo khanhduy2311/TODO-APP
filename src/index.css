@@ -713,7 +713,7 @@ body.dark-theme .tasks-popup h3 {
 .chat-popup {
   position: fixed;
   bottom: 20px;
-  right: 320px; /* chừa chỗ cho Calendar */
+  right: 20px; /* chừa chỗ cho Calendar */
   width: 280px;
   height: 350px;
   background: var(--primary-color);
