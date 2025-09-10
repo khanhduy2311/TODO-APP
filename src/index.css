@@ -854,3 +854,15 @@ body.dark-theme .tasks-popup h3 {
   border-radius: 50%;
   background: gray;
 }
+body.dark-theme .friends-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+body.dark-theme .friends-list li:hover {
+  background: var(--secondary-color);
+  color: #ffffff;
+}
