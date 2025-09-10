@@ -34,7 +34,10 @@ function AuthPage() {
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         email: user.email,
-        displayName: signUpName || ""
+        displayName: signUpName || "",
+        friends: [],
+        online: true,
+        lastSeen: serverTimestamp()
       });
 
     } catch (err) {

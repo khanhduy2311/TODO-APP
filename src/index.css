@@ -802,3 +802,54 @@ body.dark-theme .tasks-popup h3 {
   color: var(--background);
   font-weight: bold;
 }
+/* Friends List */
+.friends-list {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 200px;
+  background: var(--primary-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  padding: 10px;
+  z-index: 1500;
+}
+
+.friends-list h3 {
+  margin-bottom: 6px;
+  color: var(--accent-color);
+}
+
+.friends-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.friends-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.friends-list li:hover {
+  background: var(--secondary-color);
+  color: var(--background);
+}
+
+.status.online {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: limegreen;
+}
+
+.status.offline {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: gray;
+}

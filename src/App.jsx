@@ -1,5 +1,4 @@
 // src/App.jsx
-
 import { useState, useEffect, useRef } from 'react';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
@@ -10,7 +9,7 @@ import { auth, db } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { 
   collection, query, where, onSnapshot, addDoc, 
-  doc, updateDoc, deleteDoc, getDocs
+  doc, updateDoc, deleteDoc, getDocs, arrayUnion, serverTimestamp
 } from 'firebase/firestore';
 
 function App() {
@@ -28,6 +27,11 @@ function App() {
   const [showChatPopup, setShowChatPopup] = useState(false);
   const [chatEmail, setChatEmail] = useState("");
 
+  // Friends states
+  const [friendsList, setFriendsList] = useState([]);
+  const [showAddFriend, setShowAddFriend] = useState(false);
+  const [friendEmail, setFriendEmail] = useState("");
+
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -36,9 +40,40 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       setLoading(false);
+
+      if (currentUser) {
+        const userRef = doc(db, "users", currentUser.uid);
+        try {
+          await updateDoc(userRef, {
+            online: true,
+            lastSeen: serverTimestamp()
+          });
+        } catch (err) {
+          console.warn("⚠️ User doc chưa tồn tại, cần tạo khi đăng ký");
+        }
+
+        const unsubUser = onSnapshot(userRef, async (snap) => {
+          if (snap.exists()) {
+            const data = snap.data();
+            if (data.friends && data.friends.length > 0) {
+              const friendsSnap = await getDocs(collection(db, "users"));
+              const list = [];
+              friendsSnap.forEach((d) => {
+                if (data.friends.includes(d.id)) {
+                  list.push({ uid: d.id, ...d.data() });
+                }
+              });
+              setFriendsList(list);
+            } else {
+              setFriendsList([]);
+            }
+          }
+        });
+        return () => unsubUser();
+      }
     });
     return () => unsubscribe();
   }, []);
@@ -51,9 +86,7 @@ function App() {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuRef]);
 
   useEffect(() => {
@@ -93,7 +126,16 @@ function App() {
     }
   };
 
-  const handleLogout = () => { signOut(auth); };
+  const handleLogout = async () => { 
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      await updateDoc(userRef, {
+        online: false,
+        lastSeen: serverTimestamp()
+      });
+    }
+    signOut(auth); 
+  };
 
   const toggleTheme = () => {
     setTheme(currentTheme => (currentTheme === 'light' ? 'dark' : 'light'));
@@ -132,7 +174,6 @@ function App() {
     return [];
   };
 
-  // Handle chat start
   const startChat = async () => {
     if (!chatEmail) return;
     const snap = await getDocs(collection(db, "users"));
@@ -145,6 +186,27 @@ function App() {
       setChatUser(found);
       setShowChatPopup(false);
       setChatEmail("");
+    } else {
+      alert("Không tìm thấy user!");
+    }
+  };
+
+  const addFriend = async () => {
+    if (!friendEmail) return;
+    const snap = await getDocs(collection(db, "users"));
+    let found = null;
+    snap.forEach((docSnap) => {
+      const u = docSnap.data();
+      if (u.email === friendEmail) found = { uid: docSnap.id, ...u };
+    });
+    if (found) {
+      const userRef = doc(db, "users", user.uid);
+      const friendRef = doc(db, "users", found.uid);
+      await updateDoc(userRef, { friends: arrayUnion(found.uid) });
+      await updateDoc(friendRef, { friends: arrayUnion(user.uid) });
+      alert("Đã kết bạn với " + (found.displayName || found.email));
+      setFriendEmail("");
+      setShowAddFriend(false);
     } else {
       alert("Không tìm thấy user!");
     }
@@ -167,8 +229,6 @@ function App() {
                 {theme === 'light' ? 'Dark Mode 🌙' : 'Light Mode ☀️'}
               </button>
             </li>
-
-            {/* Submenu Tasks */}
             <li className="submenu">
               <button onClick={() => setIsTasksOpen(!isTasksOpen)}>
                 Tasks {isTasksOpen ? "▾" : "▸"}
@@ -180,12 +240,8 @@ function App() {
                 <li><button onClick={() => { setTasksPopupType("overdue"); setIsMenuOpen(false); setIsTasksOpen(false); }}>Overdue</button></li>
               </ul>
             </li>
-
-            {/* Chat menu */}
-            <li>
-              <button onClick={() => { setShowChatPopup(true); setIsMenuOpen(false); }}>Chat 💬</button>
-            </li>
-
+            <li><button onClick={() => { setShowChatPopup(true); setIsMenuOpen(false); }}>Chat 💬</button></li>
+            <li><button onClick={() => { setShowAddFriend(true); setIsMenuOpen(false); }}>Add Friend 🤝</button></li>
             <li><button onClick={handleLogout}>Sign Out</button></li>
           </ul>
         </div>
@@ -230,6 +286,22 @@ function App() {
         </div>
       )}
 
+      {/* Popup thêm bạn */}
+      {showAddFriend && (
+        <div className="tasks-popup-overlay" onClick={() => setShowAddFriend(false)}>
+          <div className="tasks-popup" onClick={e => e.stopPropagation()}>
+            <h3>Thêm bạn bè</h3>
+            <input
+              type="email"
+              placeholder="Nhập email..."
+              value={friendEmail}
+              onChange={(e) => setFriendEmail(e.target.value)}
+            />
+            <button onClick={addFriend}>Kết bạn</button>
+          </div>
+        </div>
+      )}
+
       {/* Hiển thị cửa sổ chat */}
       {chatUser && (
         <Chat
@@ -237,6 +309,21 @@ function App() {
           otherUser={chatUser}
           onClose={() => setChatUser(null)}
         />
+      )}
+
+      {/* Danh sách bạn bè */}
+      {user && (
+        <div className="friends-list">
+          <h3>Bạn bè</h3>
+          <ul>
+            {friendsList.map((f) => (
+              <li key={f.uid} onClick={() => setChatUser(f)}>
+                {f.displayName || f.email}
+                <span className={`status ${f.online ? "online" : "offline"}`}></span>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
 
       <h1>To-do app</h1>
