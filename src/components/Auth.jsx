@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   updateProfile 
 } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import './AuthPage.css';
 
 function AuthPage() {
@@ -18,6 +18,7 @@ function AuthPage() {
 
   const [error, setError] = useState('');
 
+  // Đăng ký
   const handleSignUp = async (e) => {
     e.preventDefault();
     setError('');
@@ -25,12 +26,12 @@ function AuthPage() {
       const userCredential = await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword);
       const user = userCredential.user;
 
-      // Cập nhật displayName
-      await updateProfile(user, {
-        displayName: signUpName
-      });
+      // Cập nhật displayName trong Firebase Auth
+      if (signUpName) {
+        await updateProfile(user, { displayName: signUpName });
+      }
 
-      // Lưu thông tin user vào Firestore
+      // Tạo doc trong Firestore collection "users"
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         email: user.email,
@@ -40,11 +41,14 @@ function AuthPage() {
         lastSeen: serverTimestamp()
       });
 
+      console.log("✅ User created in Firestore");
+
     } catch (err) {
       setError(err.message.replace('Firebase: ', ''));
     }
   };
 
+  // Đăng nhập
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError('');
@@ -58,14 +62,33 @@ function AuthPage() {
   return (
     <div className="auth-body">
       <div className={`auth-container ${isSignUpActive ? "right-panel-active" : ""}`}>
+        
         {/* Form Đăng Ký */}
         <div className="form-container sign-up-container">
           <form onSubmit={handleSignUp}>
             <h1>Create Account</h1>
             <span>or use your email for registration</span>
-            <input type="text" placeholder="Name" value={signUpName} onChange={(e) => setSignUpName(e.target.value)} required />
-            <input type="email" placeholder="Email" value={signUpEmail} onChange={(e) => setSignUpEmail(e.target.value)} required />
-            <input type="password" placeholder="Password" value={signUpPassword} onChange={(e) => setSignUpPassword(e.target.value)} required />
+            <input 
+              type="text" 
+              placeholder="Name" 
+              value={signUpName} 
+              onChange={(e) => setSignUpName(e.target.value)} 
+              required 
+            />
+            <input 
+              type="email" 
+              placeholder="Email" 
+              value={signUpEmail} 
+              onChange={(e) => setSignUpEmail(e.target.value)} 
+              required 
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              value={signUpPassword} 
+              onChange={(e) => setSignUpPassword(e.target.value)} 
+              required 
+            />
             <button type="submit" style={{marginTop: '10px'}}>Sign Up</button>
             {error && isSignUpActive && <p className="error-message">{error}</p>}
           </form>
@@ -76,8 +99,20 @@ function AuthPage() {
           <form onSubmit={handleSignIn}>
             <h1>Sign In</h1>
             <span>or use your account</span>
-            <input type="email" placeholder="Email" value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} required />
-            <input type="password" placeholder="Password" value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} required />
+            <input 
+              type="email" 
+              placeholder="Email" 
+              value={signInEmail} 
+              onChange={(e) => setSignInEmail(e.target.value)} 
+              required 
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              value={signInPassword} 
+              onChange={(e) => setSignInPassword(e.target.value)} 
+              required 
+            />
             <a href="#">Forgot your password?</a>
             <button type="submit">Sign In</button>
             {error && !isSignUpActive && <p className="error-message">{error}</p>}
