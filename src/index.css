@@ -709,6 +709,8 @@ body.dark-theme .tasks-popup h3 {
   background: var(--primary-color);
   color: var(--accent-color);
 }
+
+/* Chat popup */
 .chat-popup {
   position: fixed;
   bottom: 20px;
@@ -776,4 +778,3 @@ body.dark-theme .tasks-popup h3 {
   color: var(--background);
   cursor: pointer;
 }
-
