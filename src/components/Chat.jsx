@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { 
-  collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp 
+  collection, query, where, onSnapshot, addDoc, serverTimestamp 
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -11,20 +11,23 @@ function Chat({ currentUser, otherUser, onClose }) {
 
   const chatId = [currentUser.uid, otherUser.uid].sort().join("_");
 
-  // Lắng nghe tin nhắn realtime
+  // Lắng nghe realtime
   useEffect(() => {
     if (!currentUser || !otherUser) return;
 
     const q = query(
       collection(db, "messages"),
-      where("chatId", "==", chatId),
-      orderBy("createdAt")
+      where("chatId", "==", chatId)
     );
 
     const unsub = onSnapshot(q, (snap) => {
-      const msgs = snap.docs
-        .map(doc => ({ id: doc.id, ...doc.data() }))
-        .filter(m => !!m.createdAt); // bỏ tin chưa có timestamp
+      const msgs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      // sort client theo createdAt
+      msgs.sort((a, b) => {
+        if (!a.createdAt) return -1;
+        if (!b.createdAt) return 1;
+        return a.createdAt.toMillis() - b.createdAt.toMillis();
+      });
       setMessages(msgs);
     });
 
@@ -35,23 +38,19 @@ function Chat({ currentUser, otherUser, onClose }) {
   const sendMessage = async () => {
     if (!text.trim()) return;
 
-    const newMsg = {
+    await addDoc(collection(db, "messages"), {
       from: currentUser.uid,
       to: otherUser.uid,
       participants: [currentUser.uid, otherUser.uid],
       chatId,
       text,
       createdAt: serverTimestamp()
-    };
+    });
 
-    // Hiển thị local ngay (tránh delay do serverTimestamp)
-    setMessages(prev => [...prev, { ...newMsg, id: Date.now() }]);
-
-    await addDoc(collection(db, "messages"), newMsg);
     setText("");
   };
 
-  // Auto scroll xuống cuối
+  // Auto scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
