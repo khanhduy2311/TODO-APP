@@ -861,6 +861,7 @@ body.dark-theme .friends-list li {
   padding: 6px;
   cursor: pointer;
   border-radius: 6px;
+  color: #ffffff;
 }
 body.dark-theme .friends-list li:hover {
   background: var(--secondary-color);
