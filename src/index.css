@@ -805,7 +805,7 @@ body.dark-theme .tasks-popup h3 {
 /* Friends List */
 .friends-list {
   position: fixed;
-  top: 80px;
+  top: 150px;
   right: 20px;
   width: 200px;
   background: var(--primary-color);
@@ -818,6 +818,7 @@ body.dark-theme .tasks-popup h3 {
 .friends-list h3 {
   margin-bottom: 6px;
   color: var(--accent-color);
+  font-size: 1.0rem;
 }
 
 .friends-list ul {
