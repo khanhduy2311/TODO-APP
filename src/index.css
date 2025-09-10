@@ -600,6 +600,7 @@ body.dark-theme .calendar-grid .current-day {
   background-color: var(--accent-color);
 }
 /* Popup overlay */
+/* Popup overlay */
 .tasks-popup-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -620,6 +621,7 @@ body.dark-theme .calendar-grid .current-day {
   width: 90%;
   max-height: 70vh;
   overflow-y: auto;
+  color: var(--text-color);
 }
 
 .tasks-popup h3 {
@@ -652,17 +654,49 @@ body.dark-theme .calendar-grid .current-day {
   cursor: pointer;
   font-weight: 600;
 }
+
 /* Dark mode cho popup tasks */
 body.dark-theme .tasks-popup {
-  background: #2a2f36; /* nền tối hơn */
-  color: #ffffff;      /* chữ trắng */
+  background: #2a2f36;
+  color: #ffffff;
 }
-
 body.dark-theme .tasks-popup li {
-  background: #3a3f47; /* nền item tối */
-  color: #ffffff;      /* chữ trắng */
+  background: #3a3f47;
+  color: #ffffff;
+}
+body.dark-theme .tasks-popup h3 {
+  color: var(--accent-color);
 }
 
-body.dark-theme .tasks-popup h3 {
-  color: var(--accent-color); /* giữ màu nhấn neon */
+/* Submenu cho Tasks */
+.submenu {
+  position: relative;
+}
+.submenu-items {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  background: var(--background);
+  border-radius: var(--border-radius-small);
+  box-shadow: 0 4px 12px var(--shadow-light);
+  width: 160px;
+  z-index: 1500;
+}
+.submenu:hover .submenu-items {
+  display: block;
+}
+.submenu-items button {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-color);
+}
+.submenu-items button:hover {
+  background: var(--primary-color);
+  color: var(--accent-color);
 }

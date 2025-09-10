@@ -1,4 +1,5 @@
-// App.jsx
+// src/App.jsx
+
 import { useState, useEffect, useRef } from 'react';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
@@ -18,7 +19,7 @@ function App() {
   const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showTasksPopup, setShowTasksPopup] = useState(false); // NEW
+  const [tasksPopupType, setTasksPopupType] = useState(null); // all | upcoming | completed | overdue
 
   const menuRef = useRef(null);
 
@@ -98,8 +99,31 @@ function App() {
     return localTodoDate.toDateString() === selectedDate.toDateString();
   });
 
-  // Sort tasks by deadline ascending
-  const sortedTodos = [...todos].filter(t => t.dueDate).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+  // Helper: lọc tasks theo loại popup
+  const getTasksByType = (type) => {
+    const today = new Date();
+    if (type === "all") {
+      return [...todos].filter(t => t.dueDate).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    }
+    if (type === "upcoming") {
+      return todos.filter(t => {
+        if (!t.dueDate) return false;
+        const due = new Date(t.dueDate);
+        return due >= today && due <= new Date(today.getTime() + 7*24*60*60*1000);
+      }).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    }
+    if (type === "completed") {
+      return todos.filter(t => t.completed).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    }
+    if (type === "overdue") {
+      return todos.filter(t => {
+        if (!t.dueDate) return false;
+        const due = new Date(t.dueDate);
+        return due < today && !t.completed;
+      }).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    }
+    return [];
+  };
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <Auth />;
@@ -118,30 +142,42 @@ function App() {
                 {theme === 'light' ? 'Dark Mode 🌙' : 'Light Mode ☀️'}
               </button>
             </li>
-            <li>
-              <button onClick={() => { setShowTasksPopup(true); setIsMenuOpen(false); }}>
-                Tasks
-              </button>
+
+            {/* Submenu Tasks */}
+            <li className="submenu">
+              <button>Tasks ▸</button>
+              <ul className="submenu-items">
+                <li><button onClick={() => { setTasksPopupType("all"); setIsMenuOpen(false); }}>All</button></li>
+                <li><button onClick={() => { setTasksPopupType("upcoming"); setIsMenuOpen(false); }}>Upcoming</button></li>
+                <li><button onClick={() => { setTasksPopupType("completed"); setIsMenuOpen(false); }}>Completed</button></li>
+                <li><button onClick={() => { setTasksPopupType("overdue"); setIsMenuOpen(false); }}>Overdue</button></li>
+              </ul>
             </li>
+
             <li><button onClick={handleLogout}>Sign Out</button></li>
           </ul>
         </div>
       </div>
 
       {/* Popup hiển thị danh sách task */}
-      {showTasksPopup && (
-        <div className="tasks-popup-overlay" onClick={() => setShowTasksPopup(false)}>
+      {tasksPopupType && (
+        <div className="tasks-popup-overlay" onClick={() => setTasksPopupType(null)}>
           <div className="tasks-popup" onClick={e => e.stopPropagation()}>
-            <h3>All Tasks (by deadline)</h3>
+            <h3>
+              {tasksPopupType === "all" && "All Tasks"}
+              {tasksPopupType === "upcoming" && "Upcoming Tasks (7 days)"}
+              {tasksPopupType === "completed" && "Completed Tasks"}
+              {tasksPopupType === "overdue" && "Overdue Tasks"}
+            </h3>
             <ul>
-              {sortedTodos.map(todo => (
+              {getTasksByType(tasksPopupType).map(todo => (
                 <li key={todo.id}>
                   <span>{todo.text}</span>
-                  <small>{new Date(todo.dueDate).toLocaleDateString('vi-VN')}</small>
+                  <small>{todo.dueDate ? new Date(todo.dueDate).toLocaleDateString('vi-VN') : ''}</small>
                 </li>
               ))}
             </ul>
-            <button onClick={() => setShowTasksPopup(false)}>Close</button>
+            <button onClick={() => setTasksPopupType(null)}>Close</button>
           </div>
         </div>
       )}
