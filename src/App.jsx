@@ -9,7 +9,8 @@ import { auth, db } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { 
   collection, query, where, onSnapshot, addDoc, 
-  doc, updateDoc, deleteDoc, getDocs, arrayUnion, serverTimestamp
+  doc, updateDoc, deleteDoc, getDocs, arrayUnion, 
+  serverTimestamp, setDoc
 } from 'firebase/firestore';
 
 function App() {
@@ -126,15 +127,21 @@ function App() {
     }
   };
 
+  // ✅ Fix handleLogout để không lỗi khi user chưa có doc
   const handleLogout = async () => { 
-    if (user) {
-      const userRef = doc(db, "users", user.uid);
-      await updateDoc(userRef, {
-        online: false,
-        lastSeen: serverTimestamp()
-      });
+    try {
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, {
+          online: false,
+          lastSeen: serverTimestamp()
+        }, { merge: true });  // tạo mới nếu chưa có, hoặc merge nếu có
+      }
+      await signOut(auth); 
+    } catch (err) {
+      console.error("❌ Lỗi khi sign out:", err);
+      alert("Đăng xuất thất bại, vui lòng thử lại!");
     }
-    signOut(auth); 
   };
 
   const toggleTheme = () => {
