@@ -51,7 +51,7 @@ function AnalyticsDashboard({ todos }) {
     <div className="analytics-dashboard">
       {/* Productivity Dashboard */}
       <div className="chart-container">
-        <h4>📈 Productivity (Tasks per Day)</h4>
+        <h4>Productivity (Tasks per Day)</h4>
         <ResponsiveContainer width="100%" height={200}>
           <BarChart data={productivityData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -73,7 +73,7 @@ function AnalyticsDashboard({ todos }) {
 
       {/* Performance Trend */}
       <div className="chart-container">
-        <h4>📊 Performance Trend (%)</h4>
+        <h4>Performance Trend (%)</h4>
         <ResponsiveContainer width="100%" height={200}>
           <LineChart data={performanceData}>
             <CartesianGrid strokeDasharray="3 3" />

@@ -277,7 +277,7 @@ function App() {
             </li>
             <li>
               <button onClick={() => { setShowAnalytics(true); setIsMenuOpen(false); }}>
-                Analytics & Insights 📊
+                Analytics & Insights 
               </button>
             </li>
             <li><button onClick={() => { setShowAddFriend(true); setIsMenuOpen(false); }}>Add Friend</button></li>
@@ -318,7 +318,7 @@ function App() {
       {showAnalytics && (
         <div className="tasks-popup-overlay" onClick={() => setShowAnalytics(false)}>
           <div className="tasks-popup" onClick={e => e.stopPropagation()} style={{maxWidth: "900px", width: "95%"}}>
-            <h3>📊 Analytics & Insights</h3>
+            <h3> Analytics & Insights</h3>
             <AnalyticsDashboard todos={todos}/>
             <button onClick={() => setShowAnalytics(false)}>Close</button>
           </div>
