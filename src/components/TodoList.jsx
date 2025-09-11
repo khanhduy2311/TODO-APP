@@ -4,7 +4,7 @@ function TodoList({ todos, toggleTodo, deleteTodo }) {
   if (todos.length === 0) {
     return (
       <p style={{ color: 'var(--placeholder-color)', fontStyle: 'italic', marginTop: '15px', fontSize: '0.8rem' }}>
-        Không có công việc nào cho ngày này.
+        No tasks available.
       </p>
     );
   }
