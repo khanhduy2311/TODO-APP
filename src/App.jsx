@@ -23,11 +23,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTasksOpen, setIsTasksOpen] = useState(false); 
   const [tasksPopupType, setTasksPopupType] = useState(null); 
-  const [showAnalytics, setShowAnalytics] = useState(false);
-
-  // ✅ New states
-  const [showProfile, setShowProfile] = useState(false);
-  const [showAbout, setShowAbout] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false); // ✅ thêm state cho Analytics
 
   // Chat states
   const [chatUser, setChatUser] = useState(null);
@@ -284,16 +280,6 @@ function App() {
                 Analytics & Insights 
               </button>
             </li>
-            <li>
-              <button onClick={() => { setShowProfile(true); setIsMenuOpen(false); }}>
-                👤 Profile
-              </button>
-            </li>
-            <li>
-              <button onClick={() => { setShowAbout(true); setIsMenuOpen(false); }}>
-                ℹ️ About Us
-              </button>
-            </li>
             <li><button onClick={() => { setShowAddFriend(true); setIsMenuOpen(false); }}>Add Friend</button></li>
             <li><button onClick={handleLogout}>Sign Out</button></li>
           </ul>
@@ -335,35 +321,6 @@ function App() {
             <h3> Analytics & Insights</h3>
             <AnalyticsDashboard todos={todos}/>
             <button onClick={() => setShowAnalytics(false)}>Close</button>
-          </div>
-        </div>
-      )}
-
-      {/* Popup Profile */}
-      {showProfile && (
-        <div className="tasks-popup-overlay" onClick={() => setShowProfile(false)}>
-          <div className="tasks-popup" onClick={e => e.stopPropagation()} style={{maxWidth: "500px"}}>
-            <h3>👤 Profile</h3>
-            <p><b>Email:</b> {user.email}</p>
-            <p><b>Name:</b> {user.displayName || "N/A"}</p>
-            <p><b>Total Tasks:</b> {todos.length}</p>
-            <p><b>Completed Tasks:</b> {todos.filter(t => t.completed).length}</p>
-            <p><b>Friends:</b> {friendsList.length}</p>
-            <button onClick={() => setShowProfile(false)}>Close</button>
-          </div>
-        </div>
-      )}
-
-      {/* Popup About Us */}
-      {showAbout && (
-        <div className="tasks-popup-overlay" onClick={() => setShowAbout(false)}>
-          <div className="tasks-popup" onClick={e => e.stopPropagation()} style={{maxWidth: "500px"}}>
-            <h3>ℹ️ About Us</h3>
-            <p>This app was built to help you stay productive and connected 🎯</p>
-            <p><b>Author:</b> Tran Khanh Duy</p>
-            <p><b>Email:</b> khanhduy23112006@gmail.com</p>
-            <p>Version 1.0.0</p>
-            <button onClick={() => setShowAbout(false)}>Close</button>
           </div>
         </div>
       )}
@@ -426,14 +383,23 @@ function App() {
         </div>
       )}
 
-      {/* Friends List */}
-      {friendsList.length > 0 && (
+      {/* Hiển thị cửa sổ chat */}
+      {chatUser && (
+        <Chat
+          currentUser={user}
+          otherUser={chatUser}
+          onClose={() => setChatUser(null)}
+        />
+      )}
+
+      {/* Danh sách bạn bè */}
+      {user && (
         <div className="friends-list">
-          <h3>Friends</h3>
+          <h3>Your friends</h3>
           <ul>
-            {friendsList.map(f => (
-              <li key={f.uid} onClick={() => { setChatUser(f); }}>
-                <span>{f.displayName || f.email}</span>
+            {friendsList.map((f) => (
+              <li key={f.uid} onClick={() => setChatUser(f)}>
+                {f.displayName || f.email}
                 <span className={`status ${f.online ? "online" : "offline"}`}></span>
               </li>
             ))}
@@ -441,27 +407,23 @@ function App() {
         </div>
       )}
 
-      <h1>Todo Calendar</h1>
+      <h1>To-do app</h1>
       <div className="main-container">
         <div className="wrapper">
-          <TodoForm addTodo={addTodo}/>
-          <TodoList 
-            todos={filteredTodos} 
-            toggleTodo={toggleTodo} 
-            deleteTodo={deleteTodo} 
-            openNotePopup={openNotePopup} 
+          <TodoForm addTodo={addTodo} selectedDate={selectedDate}/>
+          <TodoList
+            todos={filteredTodos}
+            toggleTodo={toggleTodo}
+            deleteTodo={deleteTodo}
+            onEditNote={openNotePopup}
           />
         </div>
-        <Calendar 
-          todos={todos} 
-          selectedDate={selectedDate} 
-          setSelectedDate={setSelectedDate} 
+        <Calendar
+          selectedDate={selectedDate}
+          onDateChange={setSelectedDate}
+          todos={todos}
         />
       </div>
-
-      {chatUser && (
-        <Chat user={user} otherUser={chatUser} onClose={() => setChatUser(null)} />
-      )}
     </>
   );
 }
