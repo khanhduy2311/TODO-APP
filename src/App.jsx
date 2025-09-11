@@ -33,6 +33,11 @@ function App() {
   const [showAddFriend, setShowAddFriend] = useState(false);
   const [friendEmail, setFriendEmail] = useState("");
 
+  // Note states
+  const [showNotePopup, setShowNotePopup] = useState(false);
+  const [currentEditingTodo, setCurrentEditingTodo] = useState(null);
+  const [noteText, setNoteText] = useState("");
+
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -109,7 +114,7 @@ function App() {
   const addTodo = async (text, dueDate) => {
     if (!user) return;
     await addDoc(collection(db, 'todos'), {
-      uid: user.uid, text, dueDate, completed: false, createdAt: new Date(),
+      uid: user.uid, text, dueDate, completed: false, createdAt: new Date(), note: "",
     });
   };
 
@@ -127,6 +132,28 @@ function App() {
     }
   };
 
+  // Note functions
+  const openNotePopup = (todo) => {
+    setCurrentEditingTodo(todo);
+    setNoteText(todo.note || "");
+    setShowNotePopup(true);
+  };
+
+  const saveNote = async () => {
+    if (!user || !currentEditingTodo) return;
+    const todoRef = doc(db, 'todos', currentEditingTodo.id);
+    await updateDoc(todoRef, { note: noteText });
+    setShowNotePopup(false);
+    setCurrentEditingTodo(null);
+    setNoteText("");
+  };
+
+  const closeNotePopup = () => {
+    setShowNotePopup(false);
+    setCurrentEditingTodo(null);
+    setNoteText("");
+  };
+
   // ✅ Fix handleLogout để không lỗi khi user chưa có doc
   const handleLogout = async () => { 
     try {
@@ -139,7 +166,7 @@ function App() {
       }
       await signOut(auth); 
     } catch (err) {
-      console.error("❌ Lỗi khi sign out:", err);
+      console.error("⌘ Lỗi khi sign out:", err);
       alert("Đăng xuất thất bại, vui lòng thử lại!");
     }
   };
@@ -265,9 +292,14 @@ function App() {
             </h3>
             <ul>
               {getTasksByType(tasksPopupType).map(todo => (
-                <li key={todo.id}>
+                <li key={todo.id} onClick={() => openNotePopup(todo)} style={{cursor: 'pointer'}}>
                   <span>{todo.text}</span>
                   <small>{todo.dueDate ? new Date(todo.dueDate).toLocaleDateString('vi-VN') : ''}</small>
+                  {todo.note && (
+                    <div style={{fontSize: '0.7rem', color: 'var(--secondary-color)', marginTop: '2px'}}>
+                      📝 {todo.note.substring(0, 20)}{todo.note.length > 20 ? '...' : ''}
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
@@ -308,6 +340,32 @@ function App() {
         </div>
       )}
 
+      {/* Note Popup */}
+      {showNotePopup && (
+        <div className="tasks-popup-overlay" onClick={closeNotePopup}>
+          <div className="note-popup" onClick={e => e.stopPropagation()}>
+            <h3>Edit Note</h3>
+            <div className="task-info">
+              <strong>{currentEditingTodo?.text}</strong>
+              {currentEditingTodo?.dueDate && (
+                <small> - {new Date(currentEditingTodo.dueDate).toLocaleDateString('vi-VN')}</small>
+              )}
+            </div>
+            <textarea
+              value={noteText}
+              onChange={(e) => setNoteText(e.target.value)}
+              placeholder="Add your note here..."
+              rows="6"
+              autoFocus
+            />
+            <div className="note-popup-buttons">
+              <button onClick={saveNote} className="save-btn">Save</button>
+              <button onClick={closeNotePopup} className="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hiển thị cửa sổ chat */}
       {chatUser && (
         <Chat
@@ -340,6 +398,7 @@ function App() {
             todos={filteredTodos}
             toggleTodo={toggleTodo}
             deleteTodo={deleteTodo}
+            onEditNote={openNotePopup}
           />
         </div>
         <Calendar

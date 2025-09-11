@@ -1,6 +1,6 @@
 import TodoItem from './TodoItem';
 
-function TodoList({ todos, toggleTodo, deleteTodo }) {
+function TodoList({ todos, toggleTodo, deleteTodo, onEditNote }) {
   if (todos.length === 0) {
     return (
       <p style={{ color: 'var(--placeholder-color)', fontStyle: 'italic', marginTop: '15px', fontSize: '0.8rem' }}>
@@ -16,7 +16,8 @@ function TodoList({ todos, toggleTodo, deleteTodo }) {
           key={todo.id}
           todo={todo}
           toggleTodo={toggleTodo} 
-          deleteTodo={deleteTodo} 
+          deleteTodo={deleteTodo}
+          onEditNote={onEditNote}
         />
       ))}
     </ul>
