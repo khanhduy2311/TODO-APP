@@ -1056,3 +1056,21 @@ body.dark-theme .friends-list li:hover {
 .chart-container {
   margin-bottom: 30px;
 }
+.analytics-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.analytics-dashboard h4 {
+  color: var(--accent-color);
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.chart-container {
+  background: var(--background);
+  padding: 10px;
+  border-radius: var(--border-radius-small);
+  box-shadow: 0 2px 8px var(--shadow-light);
+}

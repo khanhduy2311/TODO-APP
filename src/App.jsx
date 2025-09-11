@@ -23,6 +23,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTasksOpen, setIsTasksOpen] = useState(false); 
   const [tasksPopupType, setTasksPopupType] = useState(null); 
+  const [showAnalytics, setShowAnalytics] = useState(false); // ✅ thêm state cho Analytics
 
   // Chat states
   const [chatUser, setChatUser] = useState(null);
@@ -274,6 +275,11 @@ function App() {
                 <li><button onClick={() => { setTasksPopupType("overdue"); setIsMenuOpen(false); setIsTasksOpen(false); }}>Overdue</button></li>
               </ul>
             </li>
+            <li>
+              <button onClick={() => { setShowAnalytics(true); setIsMenuOpen(false); }}>
+                Analytics & Insights 📊
+              </button>
+            </li>
             <li><button onClick={() => { setShowAddFriend(true); setIsMenuOpen(false); }}>Add Friend</button></li>
             <li><button onClick={handleLogout}>Sign Out</button></li>
           </ul>
@@ -304,6 +310,17 @@ function App() {
               ))}
             </ul>
             <button onClick={() => setTasksPopupType(null)}>Close</button>
+          </div>
+        </div>
+      )}
+
+      {/* Popup Analytics */}
+      {showAnalytics && (
+        <div className="tasks-popup-overlay" onClick={() => setShowAnalytics(false)}>
+          <div className="tasks-popup" onClick={e => e.stopPropagation()} style={{maxWidth: "900px", width: "95%"}}>
+            <h3>📊 Analytics & Insights</h3>
+            <AnalyticsDashboard todos={todos}/>
+            <button onClick={() => setShowAnalytics(false)}>Close</button>
           </div>
         </div>
       )}
@@ -407,9 +424,6 @@ function App() {
           todos={todos}
         />
       </div>
-
-      {/* ✅ Analytics Dashboard */}
-      <AnalyticsDashboard todos={todos}/>
     </>
   );
 }

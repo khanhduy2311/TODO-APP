@@ -1,9 +1,14 @@
 // src/components/AnalyticsDashboard.jsx
 import { useMemo } from "react";
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { 
+  BarChart, Bar, 
+  LineChart, Line, 
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, 
+  ResponsiveContainer 
+} from "recharts";
 
 function AnalyticsDashboard({ todos }) {
-  // ✅ Thống kê productivity theo ngày
+  // ✅ Productivity stats (tasks per day)
   const productivityData = useMemo(() => {
     const map = {};
     todos.forEach(t => {
@@ -16,7 +21,7 @@ function AnalyticsDashboard({ todos }) {
     return Object.values(map);
   }, [todos]);
 
-  // ✅ Habit streaks
+  // ✅ Habit streaks (consecutive days completed)
   const habitStreak = useMemo(() => {
     const days = new Set(
       todos.filter(t => t.completed && t.dueDate).map(t => {
@@ -26,7 +31,7 @@ function AnalyticsDashboard({ todos }) {
     );
     let streak = 0;
     let today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
     while (days.has(today.getTime())) {
       streak++;
       today.setDate(today.getDate() - 1);
@@ -34,7 +39,7 @@ function AnalyticsDashboard({ todos }) {
     return streak;
   }, [todos]);
 
-  // ✅ Performance trend (tỷ lệ hoàn thành theo ngày)
+  // ✅ Performance trend (completion rate %)
   const performanceData = useMemo(() => {
     return productivityData.map(d => ({
       date: d.date,
@@ -44,12 +49,10 @@ function AnalyticsDashboard({ todos }) {
 
   return (
     <div className="analytics-dashboard">
-      <h2>📊 Analytics & Insights</h2>
-
       {/* Productivity Dashboard */}
       <div className="chart-container">
-        <h3>Productivity (Tasks per Day)</h3>
-        <ResponsiveContainer width="100%" height={250}>
+        <h4>📈 Productivity (Tasks per Day)</h4>
+        <ResponsiveContainer width="100%" height={200}>
           <BarChart data={productivityData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date"/>
@@ -64,14 +67,14 @@ function AnalyticsDashboard({ todos }) {
 
       {/* Habit Streak */}
       <div className="chart-container">
-        <h3>🔥 Habit Streak</h3>
+        <h4>🔥 Habit Streak</h4>
         <p>You have completed tasks for <b>{habitStreak}</b> consecutive days!</p>
       </div>
 
       {/* Performance Trend */}
       <div className="chart-container">
-        <h3>Performance Trend (%)</h3>
-        <ResponsiveContainer width="100%" height={250}>
+        <h4>📊 Performance Trend (%)</h4>
+        <ResponsiveContainer width="100%" height={200}>
           <LineChart data={performanceData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date"/>
