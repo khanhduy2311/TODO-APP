@@ -283,7 +283,7 @@ function App() {
             <h3>Bắt đầu chat</h3>
             <input
               type="email"
-              placeholder="Nhập email người dùng..."
+              placeholder="Add personal email..."
               value={chatEmail}
               onChange={(e) => setChatEmail(e.target.value)}
             />
@@ -299,11 +299,11 @@ function App() {
             <h3>Thêm bạn bè</h3>
             <input
               type="email"
-              placeholder="Nhập email..."
+              placeholder="Add email..."
               value={friendEmail}
               onChange={(e) => setFriendEmail(e.target.value)}
             />
-            <button onClick={addFriend}>Kết bạn</button>
+            <button onClick={addFriend}>Add friend</button>
           </div>
         </div>
       )}
@@ -320,7 +320,7 @@ function App() {
       {/* Danh sách bạn bè */}
       {user && (
         <div className="friends-list">
-          <h3>Bạn bè</h3>
+          <h3>Your friends</h3>
           <ul>
             {friendsList.map((f) => (
               <li key={f.uid} onClick={() => setChatUser(f)}>
