@@ -5,6 +5,7 @@ import TodoList from './components/TodoList';
 import Calendar from './components/Calendar';
 import Auth from './components/Auth';
 import Chat from './components/Chat';
+import AnalyticsDashboard from './components/AnalyticsDashboard';
 import { auth, db } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { 
@@ -154,7 +155,6 @@ function App() {
     setNoteText("");
   };
 
-  // ✅ Fix handleLogout để không lỗi khi user chưa có doc
   const handleLogout = async () => { 
     try {
       if (user) {
@@ -162,7 +162,7 @@ function App() {
         await setDoc(userRef, {
           online: false,
           lastSeen: serverTimestamp()
-        }, { merge: true });  // tạo mới nếu chưa có, hoặc merge nếu có
+        }, { merge: true });  
       }
       await signOut(auth); 
     } catch (err) {
@@ -407,6 +407,9 @@ function App() {
           todos={todos}
         />
       </div>
+
+      {/* ✅ Analytics Dashboard */}
+      <AnalyticsDashboard todos={todos}/>
     </>
   );
 }
