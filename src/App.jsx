@@ -167,8 +167,8 @@ function App() {
       }
       await signOut(auth); 
     } catch (err) {
-      console.error("⌘ Lỗi khi sign out:", err);
-      alert("Đăng xuất thất bại, vui lòng thử lại!");
+      console.error("⌘ Error when Sign out:", err);
+      alert("Cannot sign out, please try again!");
     }
   };
 
@@ -222,7 +222,7 @@ function App() {
       setShowChatPopup(false);
       setChatEmail("");
     } else {
-      alert("Không tìm thấy user!");
+      alert("Not found user!");
     }
   };
 
@@ -239,11 +239,11 @@ function App() {
       const friendRef = doc(db, "users", found.uid);
       await updateDoc(userRef, { friends: arrayUnion(found.uid) });
       await updateDoc(friendRef, { friends: arrayUnion(user.uid) });
-      alert("Đã kết bạn với " + (found.displayName || found.email));
+      alert("You are made friend with " + (found.displayName || found.email));
       setFriendEmail("");
       setShowAddFriend(false);
     } else {
-      alert("Không tìm thấy user!");
+      alert("Not found user!");
     }
   };
 
@@ -345,14 +345,14 @@ function App() {
       {showAddFriend && (
         <div className="tasks-popup-overlay" onClick={() => setShowAddFriend(false)}>
           <div className="tasks-popup" onClick={e => e.stopPropagation()}>
-            <h3>Thêm bạn bè</h3>
+            <h3>Add friends</h3>
             <input
               type="email"
               placeholder="Add email..."
               value={friendEmail}
               onChange={(e) => setFriendEmail(e.target.value)}
             />
-            <button onClick={addFriend}>Add friend</button>
+            <button onClick={addFriend}>Add</button>
           </div>
         </div>
       )}

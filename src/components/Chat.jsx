@@ -59,7 +59,7 @@ function Chat({ currentUser, otherUser, onClose }) {
     <div className="chat-popup">
       <div className="chat-header">
         <span>{otherUser.displayName || otherUser.email}</span>
-        <button onClick={onClose}>×</button>
+        <button className="chat-close-btn" onClick={onClose}>×</button>
       </div>
 
       <div className="chat-messages">

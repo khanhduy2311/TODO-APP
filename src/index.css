@@ -902,14 +902,37 @@ body.dark-theme .tasks-popup h3 {
 }
 
 .chat-header {
-  padding: 8px 12px;
-  background: var(--accent-color);
-  color: var(--background);
-  font-weight: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 6px 10px;
+  background: var(--accent-color);
+  color: #fff;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
+
+.chat-close-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.chat-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ff4d4d;
+}
+
 
 .chat-messages {
   flex: 1;
