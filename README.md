@@ -68,6 +68,7 @@ This is a comprehensive, social-enabled To-Do web application designed to revolu
 - **Smart Organization:** Access different task views through the menu (All, Upcoming 7 days, Completed, Overdue)
 - **Real-time Synchronization:** All changes instantly reflected across all sessions and devices
 - **Automatic Reminders:** All unfinished tasks the next day will be automatically alerted by sending an email to users the night before that day.
+
 **📅 Visual Calendar Integration:**
 - **Month Navigation:** Browse through different months with arrow controls
 - **Task Indicators:** Visual dots on calendar days (red for pending tasks, green for completed)
