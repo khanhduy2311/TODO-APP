@@ -1,4 +1,3 @@
-// src/components/AnalyticsDashboard.jsx
 import { useMemo } from "react";
 import { 
   BarChart, Bar, 
@@ -8,7 +7,6 @@ import {
 } from "recharts";
 
 function AnalyticsDashboard({ todos }) {
-  // ✅ Productivity stats (tasks per day)
   const productivityData = useMemo(() => {
     const map = {};
     todos.forEach(t => {
@@ -21,7 +19,6 @@ function AnalyticsDashboard({ todos }) {
     return Object.values(map);
   }, [todos]);
 
-  // ✅ Habit streaks (consecutive days completed)
   const habitStreak = useMemo(() => {
     const days = new Set(
       todos.filter(t => t.completed && t.dueDate).map(t => {
@@ -39,7 +36,6 @@ function AnalyticsDashboard({ todos }) {
     return streak;
   }, [todos]);
 
-  // ✅ Performance trend (completion rate %)
   const performanceData = useMemo(() => {
     return productivityData.map(d => ({
       date: d.date,
@@ -49,7 +45,6 @@ function AnalyticsDashboard({ todos }) {
 
   return (
     <div className="analytics-dashboard">
-      {/* Productivity Dashboard */}
       <div className="chart-container">
         <h4>Productivity (Tasks per Day)</h4>
         <ResponsiveContainer width="100%" height={200}>
@@ -65,13 +60,11 @@ function AnalyticsDashboard({ todos }) {
         </ResponsiveContainer>
       </div>
 
-      {/* Habit Streak */}
       <div className="chart-container">
         <h4>🔥 Habit Streak</h4>
         <p>You have completed tasks for <b>{habitStreak}</b> consecutive days!</p>
       </div>
 
-      {/* Performance Trend */}
       <div className="chart-container">
         <h4>Performance Trend (%)</h4>
         <ResponsiveContainer width="100%" height={200}>

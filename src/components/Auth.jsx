@@ -18,7 +18,6 @@ function AuthPage() {
 
   const [error, setError] = useState('');
 
-  // Đăng ký
   const handleSignUp = async (e) => {
     e.preventDefault();
     setError('');
@@ -26,12 +25,10 @@ function AuthPage() {
       const userCredential = await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword);
       const user = userCredential.user;
 
-      // Cập nhật displayName trong Firebase Auth
       if (signUpName) {
         await updateProfile(user, { displayName: signUpName });
       }
 
-      // Tạo doc trong Firestore collection "users"
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         email: user.email,
@@ -48,7 +45,6 @@ function AuthPage() {
     }
   };
 
-  // Đăng nhập
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError('');
@@ -63,7 +59,6 @@ function AuthPage() {
     <div className="auth-body">
       <div className={`auth-container ${isSignUpActive ? "right-panel-active" : ""}`}>
         
-        {/* Form Đăng Ký */}
         <div className="form-container sign-up-container">
           <form onSubmit={handleSignUp}>
             <h1>Create Account</h1>
@@ -94,7 +89,6 @@ function AuthPage() {
           </form>
         </div>
         
-        {/* Form Đăng Nhập */}
         <div className="form-container sign-in-container">
           <form onSubmit={handleSignIn}>
             <h1>Sign In</h1>
@@ -119,7 +113,6 @@ function AuthPage() {
           </form>
         </div>
         
-        {/* Lớp Overlay */}
         <div className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-left">

@@ -793,6 +793,20 @@ body.dark-theme .todo-note-preview {
   overflow-y: auto;
   color: var(--text-color);
 }
+.tasks-popup input[type="email"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  outline: none;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.tasks-popup input[type="email"]:focus {
+  border-color: #7d5fff;
+  box-shadow: 0 0 6px rgba(125, 95, 255, 0.4);
+}
 
 .tasks-popup h3 {
   margin-bottom: 15px;

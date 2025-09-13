@@ -11,7 +11,6 @@ function Chat({ currentUser, otherUser, onClose }) {
 
   const chatId = [currentUser.uid, otherUser.uid].sort().join("_");
 
-  // Lắng nghe realtime
   useEffect(() => {
     if (!currentUser || !otherUser) return;
 
@@ -22,7 +21,6 @@ function Chat({ currentUser, otherUser, onClose }) {
 
     const unsub = onSnapshot(q, (snap) => {
       const msgs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      // sort client theo createdAt
       msgs.sort((a, b) => {
         if (!a.createdAt) return -1;
         if (!b.createdAt) return 1;
@@ -34,7 +32,6 @@ function Chat({ currentUser, otherUser, onClose }) {
     return () => unsub();
   }, [currentUser, otherUser, chatId]);
 
-  // Gửi tin nhắn
   const sendMessage = async () => {
     if (!text.trim()) return;
 
@@ -50,7 +47,6 @@ function Chat({ currentUser, otherUser, onClose }) {
     setText("");
   };
 
-  // Auto scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);

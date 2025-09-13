@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useState, useEffect, useRef } from 'react';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
@@ -23,19 +22,16 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTasksOpen, setIsTasksOpen] = useState(false); 
   const [tasksPopupType, setTasksPopupType] = useState(null); 
-  const [showAnalytics, setShowAnalytics] = useState(false); // ✅ thêm state cho Analytics
+  const [showAnalytics, setShowAnalytics] = useState(false); 
 
-  // Chat states
   const [chatUser, setChatUser] = useState(null);
   const [showChatPopup, setShowChatPopup] = useState(false);
   const [chatEmail, setChatEmail] = useState("");
 
-  // Friends states
   const [friendsList, setFriendsList] = useState([]);
   const [showAddFriend, setShowAddFriend] = useState(false);
   const [friendEmail, setFriendEmail] = useState("");
 
-  // Note states
   const [showNotePopup, setShowNotePopup] = useState(false);
   const [currentEditingTodo, setCurrentEditingTodo] = useState(null);
   const [noteText, setNoteText] = useState("");
@@ -134,7 +130,6 @@ function App() {
     }
   };
 
-  // Note functions
   const openNotePopup = (todo) => {
     setCurrentEditingTodo(todo);
     setNoteText(todo.note || "");
@@ -286,7 +281,6 @@ function App() {
         </div>
       </div>
 
-      {/* Popup hiển thị danh sách task */}
       {tasksPopupType && (
         <div className="tasks-popup-overlay" onClick={() => setTasksPopupType(null)}>
           <div className="tasks-popup" onClick={e => e.stopPropagation()}>
@@ -314,7 +308,6 @@ function App() {
         </div>
       )}
 
-      {/* Popup Analytics */}
       {showAnalytics && (
         <div className="tasks-popup-overlay" onClick={() => setShowAnalytics(false)}>
           <div className="tasks-popup" onClick={e => e.stopPropagation()} style={{maxWidth: "900px", width: "95%"}}>
@@ -325,7 +318,6 @@ function App() {
         </div>
       )}
 
-      {/* Popup nhập email để chat */}
       {showChatPopup && (
         <div className="tasks-popup-overlay" onClick={() => setShowChatPopup(false)}>
           <div className="tasks-popup" onClick={e => e.stopPropagation()}>
@@ -341,7 +333,6 @@ function App() {
         </div>
       )}
 
-      {/* Popup thêm bạn */}
       {showAddFriend && (
         <div className="tasks-popup-overlay" onClick={() => setShowAddFriend(false)}>
           <div className="tasks-popup" onClick={e => e.stopPropagation()}>
@@ -357,7 +348,6 @@ function App() {
         </div>
       )}
 
-      {/* Note Popup */}
       {showNotePopup && (
         <div className="tasks-popup-overlay" onClick={closeNotePopup}>
           <div className="note-popup" onClick={e => e.stopPropagation()}>
@@ -383,7 +373,6 @@ function App() {
         </div>
       )}
 
-      {/* Hiển thị cửa sổ chat */}
       {chatUser && (
         <Chat
           currentUser={user}
@@ -392,7 +381,6 @@ function App() {
         />
       )}
 
-      {/* Danh sách bạn bè */}
       {user && (
         <div className="friends-list">
           <h3>Your friends</h3>
