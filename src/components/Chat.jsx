@@ -78,7 +78,7 @@ function Chat({ currentUser, otherUser, onClose }) {
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Nhập tin nhắn..."
+          placeholder="Type messages..."
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
         <button onClick={sendMessage}>➤</button>
