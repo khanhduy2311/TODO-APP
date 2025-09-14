@@ -62,6 +62,7 @@ This is a comprehensive, social-enabled To-Do web application designed to revolu
 
 **✅ Smart Task Management:**
 - **Create Tasks:** Add new tasks with descriptions and optional due dates using the intuitive form
+- **Edit Tasks:** If you want to edit saved tasks after changing your mind, the system will help you change quickly
 - **Interactive Calendar:** Click on any calendar date to filter and view tasks for that specific day
 - **Task Completion:** Toggle tasks between complete/incomplete with visual checkbox animations
 - **Advanced Notes:** Click on any task to add or edit detailed notes in a popup interface
