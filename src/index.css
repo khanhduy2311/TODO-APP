@@ -1,3 +1,4 @@
+/* index.css without comments */
 :root {
   --background: #ffffff;
   --primary-color: #f3f0ff;
@@ -38,7 +39,6 @@ h1 {
   letter-spacing: 2px;
 }
 
-/* Auth Box */
 #auth-container {
   display:flex;
   justify-content:center;
@@ -83,7 +83,7 @@ h1 {
 }
 .main-container {
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    flex-wrap: wrap;
     gap: 30px;
     width: 100%;
     max-width: 1200px;
@@ -95,16 +95,15 @@ h1 {
     border-radius: var(--border-radius-main);
     box-shadow: 0 10px 30px var(--shadow-light);
     padding: 30px;
-    flex: 1; /* Allow flex items to grow and shrink */
-    min-width: 350px; /* Minimum width for each section */
+    flex: 1;
+    min-width: 350px;
 }
 
 .wrapper {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    /* Giới hạn chiều cao tối đa để tránh tràn màn hình trên các thiết bị nhỏ */
-    max-height: 85vh; 
+    max-height: 85vh;
 }
 
 form {
@@ -143,7 +142,7 @@ form {
     border-radius: var(--border-radius-small);
     font: inherit;
     color: var(--text-color);
-    -webkit-appearance: none; /* Remove default date input styling */
+    -webkit-appearance: none;
     appearance: none;
     cursor: text;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -155,9 +154,8 @@ form {
     box-shadow: 0 0 0 2px rgba(0, 255, 196, 0.2);
 }
 
-/* Style for the date input picker icon (browser-specific, hard to override fully) */
 input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1) brightness(1.5); /* Make the icon more visible on dark theme */
+    filter: invert(1) brightness(1.5);
     cursor: pointer;
 }
 
@@ -182,16 +180,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     list-style: none;
     padding: 0;
     margin-top: 20px;
-    /* overflow-y: auto; sẽ tự động thêm thanh cuộn dọc KHI CẦN THIẾT */
-    overflow-y: auto; 
-    /* Giới hạn chiều cao tối đa của danh sách. Bạn có thể điều chỉnh số này */
-    /* vh là đơn vị % chiều cao của màn hình (viewport height) */
-    max-height: 50vh; 
-    /* Thêm một chút khoảng trống bên phải để thanh cuộn không che mất nội dung */
+    overflow-y: auto;
+    max-height: 50vh;
     padding-right: 10px;
 }
 
-/* Tinh chỉnh thanh cuộn cho đẹp hơn (tùy chọn) */
 #todo-list::-webkit-scrollbar {
   width: 8px;
 }
@@ -227,7 +220,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     transform: translateX(5px);
 }
 
-/* Updated todo content structure for note feature */
 .todo-content {
     flex-grow: 1;
     cursor: pointer;
@@ -277,7 +269,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    flex-shrink: 0; /* Prevent button from shrinking */
+    flex-shrink: 0;
 }
 
 .delete-button svg {
@@ -286,7 +278,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .delete-button:hover svg {
-    fill: #ff4757; /* A more distinct delete color */
+    fill: #ff4757;
 }
 
 .custom-checkbox {
@@ -303,7 +295,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .custom-checkbox svg {
-    fill: transparent; /* Initial state, checkbox not checked */
+    fill: transparent;
     transition: 200ms ease;
 }
 
@@ -326,7 +318,6 @@ input[type="checkbox"] {
     display: none;
 }
 
-/* Note Popup Styles */
 .note-popup {
   background: var(--primary-color);
   padding: 25px;
@@ -433,7 +424,6 @@ input[type="checkbox"] {
   transform: translateY(-1px);
 }
 
-/* Calendar Widget Styles */
 .calendar-widget {
     min-height: 400px;
     display: flex;
@@ -521,7 +511,7 @@ input[type="checkbox"] {
 .calendar-grid .inactive {
     color: var(--placeholder-color);
     cursor: default;
-    background-color: #ca86f7; /* Slightly lighter background for inactive days */
+    background-color: #ca86f7;
 }
 
 .task-dot {
@@ -530,25 +520,24 @@ input[type="checkbox"] {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background-color: var(--accent-color); /* Default dot color */
+    background-color: var(--accent-color);
 }
 .task-dot.completed-dot {
-    background-color: limegreen; /* Green for all tasks completed */
+    background-color: limegreen;
 }
 .task-dot.has-tasks-dot {
-    background-color: orangered; /* Red for some tasks remaining */
+    background-color: orangered;
 }
 
-/* Responsive Adjustments */
 @media(max-width: 800px) {
     .main-container {
         flex-direction: column;
     }
     .wrapper, .calendar-widget {
-        min-width: unset; /* Remove min-width on small screens */
+        min-width: unset;
         width: 100%;
     }
-    
+
     .note-popup {
         max-width: 95%;
         padding: 20px;
@@ -577,21 +566,21 @@ input[type="checkbox"] {
         margin-top: 0;
     }
     .todo {
-        flex-wrap: wrap; /* Allow todo item content to wrap */
+        flex-wrap: wrap;
         gap: 10px;
     }
     .todo-content {
-        min-width: 0; /* Allow content to shrink */
+        min-width: 0;
     }
     .deadline-date {
         align-self: flex-start;
         margin-top: 2px;
     }
-    
+
     .note-popup-buttons {
         flex-direction: column;
     }
-    
+
     .note-popup-buttons button {
         width: 100%;
     }
@@ -605,12 +594,11 @@ input[type="checkbox"] {
   align-items: center;
   gap: 15px;
   z-index: 1000;
-  font-size: 0.8rem; 
+  font-size: 0.8rem;
   font-weight: 600;
-  color:#a965d3/* Đảm bảo menu nằm trên các phần tử khác */
+  color:#a965d3
 }
 
-/* Nút 3 gạch ngang (hamburger) */
 .menu-toggle-btn {
   background: none;
   border: none;
@@ -627,32 +615,27 @@ input[type="checkbox"] {
   height: 28px;
 }
 
-/* Panel menu thả xuống */
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 10px); /* Vị trí ngay dưới nút, có khoảng cách 10px */
+  top: calc(100% + 10px);
   right: 0;
   background-color: var(--background);
   border-radius: var(--border-radius-small);
   box-shadow: 0 4px 12px var(--shadow-light);
   width: 180px;
   overflow: hidden;
-  
-  /* --- Hiệu ứng xuất hiện mượt mà --- */
   opacity: 0;
-  transform: translateY(-10px); /* Bắt đầu từ vị trí hơi cao hơn */
-  pointer-events: none; /* Không thể tương tác khi đang ẩn */
+  transform: translateY(-10px);
+  pointer-events: none;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-/* Trạng thái active khi menu được mở */
 .dropdown-menu.active {
   opacity: 1;
   transform: translateY(0);
-  pointer-events: auto; /* Cho phép tương tác khi hiện ra */
+  pointer-events: auto;
 }
 
-/* Reset style cho danh sách trong menu */
 .dropdown-menu ul {
   list-style: none;
   padding: 5px;
@@ -664,7 +647,6 @@ input[type="checkbox"] {
   width: 100%;
 }
 
-/* Style cho các nút trong menu */
 .dropdown-menu button {
   width: 100%;
   background: none;
@@ -685,35 +667,32 @@ input[type="checkbox"] {
 }
 
 body.dark-theme {
-  --background: #1a1e23; /* Màu nền đen mờ */
-  --primary-color: #252a31; /* Màu container chính, hơi sáng hơn nền */
-  --secondary-color: #4db6ac; /* Màu xanh lá nhạt hơn cho các chi tiết phụ */
-  --accent-color: #00ffab; /* Màu xanh lá NEON cho các điểm nhấn chính */
-  --text-color: #e0e0e0; /* Màu chữ trắng ngà, đỡ mỏi mắt hơn trắng tinh */
+  --background: #1a1e23;
+  --primary-color: #252a31;
+  --secondary-color: #4db6ac;
+  --accent-color: #00ffab;
+  --text-color: #e0e0e0;
   --placeholder-color: #888;
-  --shadow-light: rgba(0, 255, 171, 0.1); /* Đổ bóng màu xanh neon mờ */
+  --shadow-light: rgba(0, 255, 171, 0.1);
 }
 
-/* Một vài tinh chỉnh nhỏ cho Dark Mode */
 body.dark-theme .calendar-grid .day {
-  background-color: #31363e; /* Nền của các ngày trong lịch */
+  background-color: #31363e;
 }
 
 body.dark-theme .calendar-grid .inactive {
-  background-color: #252a31; /* Nền của ngày không hoạt động */
+  background-color: #252a31;
   color: #555;
 }
 
 body.dark-theme .todo {
-   background-color: #31363e; /* Nền của từng mục to-do */
+   background-color: #31363e;
 }
 
-/* Đảm bảo nút trong menu cũng đổi màu */
 body.dark-theme .dropdown-menu button:hover {
   background-color: rgba(0, 255, 171, 0.1);
 }
 
-/* Đảm bảo svg cũng có màu phù hợp */
 body.dark-theme .menu-toggle-btn svg {
   stroke: var(--accent-color);
 }
@@ -725,8 +704,8 @@ body.dark-theme .user-menu-container {
   align-items: center;
   gap: 15px;
   z-index: 1000;
-  font-size: 0.8rem; 
-  font-weight: 600; 
+  font-size: 0.8rem;
+  font-weight: 600;
   color: #00ffab;
 }
 body.dark-theme .todo-text {
@@ -738,7 +717,6 @@ body.dark-theme .calendar-grid .current-day {
     font-weight: 700;
 }
 
-/* Dark mode for note popup */
 body.dark-theme .note-popup {
   background: #2a2f36;
   color: #ffffff;
@@ -770,7 +748,6 @@ body.dark-theme .todo-note-preview {
   color: var(--secondary-color);
 }
 
-/* Popup overlay */
 .tasks-popup-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -781,7 +758,6 @@ body.dark-theme .todo-note-preview {
   z-index: 2000;
 }
 
-/* Popup box */
 .tasks-popup {
   background: var(--primary-color);
   padding: 20px;
@@ -839,7 +815,6 @@ body.dark-theme .todo-note-preview {
   font-weight: 600;
 }
 
-/* Dark mode cho popup tasks */
 body.dark-theme .tasks-popup {
   background: #2a2f36;
   color: #ffffff;
@@ -852,7 +827,6 @@ body.dark-theme .tasks-popup h3 {
   color: var(--accent-color);
 }
 
-/* Submenu cho Tasks */
 .submenu {
   position: relative;
 }
@@ -865,8 +839,6 @@ body.dark-theme .tasks-popup h3 {
   border-radius: var(--border-radius-small);
   box-shadow: 0 4px 12px var(--shadow-light);
   overflow: hidden;
-  
-  /* hiệu ứng slide */
   max-height: 0;
   opacity: 0;
   transition: max-height 0.3s ease, opacity 0.3s ease;
@@ -874,7 +846,7 @@ body.dark-theme .tasks-popup h3 {
 
 .submenu-items.active {
   display: flex;
-  max-height: 500px; /* đủ lớn để chứa hết */
+  max-height: 500px;
   opacity: 1;
 }
 
@@ -897,7 +869,7 @@ body.dark-theme .tasks-popup h3 {
 .chat-popup {
   position: fixed;
   bottom: 20px;
-  right: 20px; /* chừa chỗ cho Calendar */
+  right: 20px;
   width: 250px;
   height: 350px;
   background: var(--primary-color);
@@ -946,7 +918,6 @@ body.dark-theme .tasks-popup h3 {
   background: rgba(255, 255, 255, 0.2);
   color: #ff4d4d;
 }
-
 
 .chat-messages {
   flex: 1;
@@ -1009,7 +980,7 @@ body.dark-theme .tasks-popup h3 {
   color: var(--background);
   font-weight: bold;
 }
-/* Friends List */
+
 .friends-list {
   position: fixed;
   top: 150px;
@@ -1110,4 +1081,49 @@ body.dark-theme .friends-list li:hover {
   padding: 10px;
   border-radius: var(--border-radius-small);
   box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+.edit-popup {
+  background: var(--primary-color);
+  padding: 25px;
+  border-radius: var(--border-radius-main);
+  box-shadow: 0 8px 25px var(--shadow-light);
+  max-width: 500px;
+  width: 90%;
+  color: var(--text-color);
+  animation: slideIn 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-popup h3 {
+  margin-bottom: 10px;
+  color: var(--accent-color);
+}
+
+.edit-popup input[type="text"],
+.edit-popup input[type="date"] {
+  padding: 10px;
+  border: 2px solid var(--secondary-color);
+  border-radius: var(--border-radius-small);
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  background: var(--background);
+}
+
+.edit-button {
+  padding: 6px 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.edit-button:hover {
+  background: rgba(0,0,0,0.06);
+  transform: translateY(-1px);
 }

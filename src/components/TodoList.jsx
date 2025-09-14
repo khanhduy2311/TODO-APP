@@ -1,6 +1,7 @@
+// TodoList.jsx
 import TodoItem from './TodoItem';
 
-function TodoList({ todos, toggleTodo, deleteTodo, onEditNote }) {
+function TodoList({ todos, toggleTodo, deleteTodo, onEditNote, onEditTask }) {
   if (todos.length === 0) {
     return (
       <p style={{ color: 'var(--placeholder-color)', fontStyle: 'italic', marginTop: '15px', fontSize: '0.8rem' }}>
@@ -15,9 +16,10 @@ function TodoList({ todos, toggleTodo, deleteTodo, onEditNote }) {
         <TodoItem
           key={todo.id}
           todo={todo}
-          toggleTodo={toggleTodo} 
+          toggleTodo={toggleTodo}
           deleteTodo={deleteTodo}
           onEditNote={onEditNote}
+          onEditTask={onEditTask}
         />
       ))}
     </ul>

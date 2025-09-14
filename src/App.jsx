@@ -1,3 +1,4 @@
+// App.jsx
 import { useState, useEffect, useRef } from 'react';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
@@ -17,12 +18,12 @@ function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [todos, setTodos] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [user, setUser] = useState(null); 
-  const [loading, setLoading] = useState(true); 
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isTasksOpen, setIsTasksOpen] = useState(false); 
-  const [tasksPopupType, setTasksPopupType] = useState(null); 
-  const [showAnalytics, setShowAnalytics] = useState(false); 
+  const [isTasksOpen, setIsTasksOpen] = useState(false);
+  const [tasksPopupType, setTasksPopupType] = useState(null);
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   const [chatUser, setChatUser] = useState(null);
   const [showChatPopup, setShowChatPopup] = useState(false);
@@ -35,6 +36,10 @@ function App() {
   const [showNotePopup, setShowNotePopup] = useState(false);
   const [currentEditingTodo, setCurrentEditingTodo] = useState(null);
   const [noteText, setNoteText] = useState("");
+
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [editText, setEditText] = useState("");
+  const [editDueDate, setEditDueDate] = useState("");
 
   const menuRef = useRef(null);
 
@@ -107,7 +112,7 @@ function App() {
     } else {
       setTodos([]);
     }
-  }, [user]); 
+  }, [user]);
 
   const addTodo = async (text, dueDate) => {
     if (!user) return;
@@ -151,16 +156,66 @@ function App() {
     setNoteText("");
   };
 
-  const handleLogout = async () => { 
+  const startEditTask = (todo) => {
+    setCurrentEditingTodo(todo);
+    if (!todo) {
+      setEditText("");
+      setEditDueDate("");
+      setShowEditPopup(true);
+      return;
+    }
+    setEditText(todo.text || "");
+    if (typeof todo.dueDate === 'string') {
+      if (todo.dueDate.includes('T')) {
+        setEditDueDate(todo.dueDate.split('T')[0]);
+      } else {
+        setEditDueDate(todo.dueDate);
+      }
+    } else if (todo.dueDate && todo.dueDate.toDate) {
+      try {
+        setEditDueDate(todo.dueDate.toDate().toISOString().split('T')[0]);
+      } catch {
+        setEditDueDate("");
+      }
+    } else if (todo.dueDate) {
+      try {
+        setEditDueDate(new Date(todo.dueDate).toISOString().split('T')[0]);
+      } catch {
+        setEditDueDate("");
+      }
+    } else {
+      setEditDueDate("");
+    }
+    setShowEditPopup(true);
+  };
+
+  const saveEditedTask = async () => {
+    if (!user || !currentEditingTodo) return;
+    const todoRef = doc(db, 'todos', currentEditingTodo.id);
+    await updateDoc(todoRef, { text: editText, dueDate: editDueDate });
+    setShowEditPopup(false);
+    setCurrentEditingTodo(null);
+    setEditText("");
+    setEditDueDate("");
+  };
+
+  const closeEditPopup = () => {
+    setShowEditPopup(false);
+    setCurrentEditingTodo(null);
+    setEditText("");
+    setEditDueDate("");
+  };
+
+  const handleLogout = async () => {
     try {
       if (user) {
         const userRef = doc(db, "users", user.uid);
         await setDoc(userRef, {
           online: false,
           lastSeen: serverTimestamp()
-        }, { merge: true });  
+        }, { merge: true });
       }
-      await signOut(auth); 
+      await signOut(auth);
     } catch (err) {
       console.error("⌘ Error when Sign out:", err);
       alert("Cannot sign out, please try again!");
@@ -373,6 +428,29 @@ function App() {
         </div>
       )}
 
+      {showEditPopup && (
+        <div className="tasks-popup-overlay" onClick={closeEditPopup}>
+          <div className="edit-popup" onClick={e => e.stopPropagation()}>
+            <h3>Edit Task</h3>
+            <input
+              type="text"
+              value={editText}
+              onChange={(e) => setEditText(e.target.value)}
+              placeholder="Task name"
+            />
+            <input
+              type="date"
+              value={editDueDate}
+              onChange={(e) => setEditDueDate(e.target.value)}
+            />
+            <div className="note-popup-buttons">
+              <button onClick={saveEditedTask} className="save-btn">Save</button>
+              <button onClick={closeEditPopup} className="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {chatUser && (
         <Chat
           currentUser={user}
@@ -404,6 +482,7 @@ function App() {
             toggleTodo={toggleTodo}
             deleteTodo={deleteTodo}
             onEditNote={openNotePopup}
+            onEditTask={startEditTask}
           />
         </div>
         <Calendar
